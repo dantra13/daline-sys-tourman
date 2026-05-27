@@ -2,6 +2,12 @@
 
 Generic ODF interface notes and schema observations.
 
+> _"ODF uses a generic structure to provide a common data format for any sport or competition whilst including the
+ability to include sport-specific extensions."_ (Foundation Principles, §1)
+
+> _"sport messages that follow general rules for all sports, but that need to be extended to incorporate sport-specific
+requirements (e.g. results)"_ (Foundation Principles, §1)
+
 | Topic | File |
 |---|---|
 | XSD package identity and compatibility notes | [2026-05-26-gen-xsd-package-30112025-draft.md](2026-05-26-gen-xsd-package-30112025-draft.md) |

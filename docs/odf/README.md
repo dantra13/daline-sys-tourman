@@ -6,6 +6,7 @@ Working notes for Olympic Data Feed interface material.
 
 | Section | Scope |
 |---|---|
+| [Concept references](concepts/README.md) | Cross-cutting ODF hierarchy, scheduling, and period semantics. |
 | [General interface](general-interface/README.md) | Generic ODF GEN messages, schema package notes, and document control. |
 | [Disciplines](disciplines/) | Sport-specific data dictionary notes, grouped by discipline code. |
 
