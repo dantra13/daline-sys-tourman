@@ -15,6 +15,7 @@ Working notes for Olympic Data Feed interface material.
 | Discipline | Notes |
 |---|---|
 | [ATH](disciplines/ath/README.md) | Athletics data dictionary notes. |
+| [BDM](disciplines/bdm/README.md) | Badminton data dictionary notes. |
 | [BOX](disciplines/box/README.md) | Boxing data dictionary notes. |
 | [FBL](disciplines/fbl/README.md) | Football data dictionary notes. |
 | [VBV](disciplines/vbv/README.md) | Beach Volleyball data dictionary notes. |
