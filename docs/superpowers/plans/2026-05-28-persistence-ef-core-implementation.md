@@ -158,78 +158,24 @@ git commit -m "chore: install dotnet-ef as local tool"
 
 ---
 
-### Task 2: Add `[EfCoreConverter]` to all 23 Vogen value objects in `Sport.Core`
+### Task 2: No-op — Vogen converters generated via marker class in `Sport.Infrastructure`
 
-**Files:** modify 23 files in `apps/api/src/Sport.Core/`. Listed in the File map.
+**This task is now a no-op.** The earlier draft proposed adding `[EfCoreConverter]` directly to each VO in `Sport.Core`, but the Vogen 8 API for that approach requires adding `Microsoft.EntityFrameworkCore` as a package reference to `Sport.Core`, breaking the domain-pure architecture (decision D2).
 
-The change per file is identical in shape: add `using Vogen;` (already present), add the attribute `[EfCoreConverter]` above the type, no other change. Vogen 8 generates a partial class `{TypeName}EfCoreValueConverter` in the same namespace.
+Vogen 8 supports a "marker class" pattern (`[EfCoreConverter<T>]` placed on a class in the consumer project) that generates the converters in `Sport.Infrastructure` and keeps `Sport.Core` clean. We use that pattern instead — see updated Section 6.4 of the spec.
 
-- [ ] **Step 1: Modify `Competitions/CompetitionId.cs`**
+The marker class file `VogenEfCoreConverters.cs` is created as part of Task 3 (when `Sport.Infrastructure` is scaffolded).
 
-Path: `apps/api/src/Sport.Core/Competitions/CompetitionId.cs` — replace the existing type declaration so it reads:
-```csharp
-using Vogen;
-
-namespace Sport.Core.Competitions;
-
-[ValueObject<Guid>]
-[EfCoreConverter]
-public readonly partial struct CompetitionId
-{
-    public static CompetitionId New() => From(Guid.CreateVersion7());
-}
-```
-
-- [ ] **Step 2: Modify the other 22 VOs**
-
-Apply the same change (add `[EfCoreConverter]` line right after `[ValueObject<...>]`) to each of:
-- `apps/api/src/Sport.Core/Competitions/CompetitionDisciplineId.cs`
-- `apps/api/src/Sport.Core/Competitions/CompetitionCode.cs`
-- `apps/api/src/Sport.Core/Structure/EventId.cs`
-- `apps/api/src/Sport.Core/Structure/PhaseId.cs`
-- `apps/api/src/Sport.Core/Structure/UnitId.cs`
-- `apps/api/src/Sport.Core/Structure/SubunitId.cs`
-- `apps/api/src/Sport.Core/Structure/Rsc.cs`
-- `apps/api/src/Sport.Core/Structure/EventTypeCode.cs`
-- `apps/api/src/Sport.Core/Structure/EventModifierCode.cs`
-- `apps/api/src/Sport.Core/Structure/PhaseCode.cs`
-- `apps/api/src/Sport.Core/Structure/UnitCode.cs`
-- `apps/api/src/Sport.Core/Structure/SubunitCode.cs`
-- `apps/api/src/Sport.Core/Participants/PersonId.cs`
-- `apps/api/src/Sport.Core/Participants/OrganisationId.cs`
-- `apps/api/src/Sport.Core/Participants/TeamId.cs`
-- `apps/api/src/Sport.Core/Participants/EntryId.cs`
-- `apps/api/src/Sport.Core/Participants/OrganisationCode.cs`
-- `apps/api/src/Sport.Core/Participants/TeamCode.cs`
-- `apps/api/src/Sport.Core/Participants/Bib.cs`
-- `apps/api/src/Sport.Core/Officials/OfficialAssignmentId.cs`
-- `apps/api/src/Sport.Core/Officials/FunctionCode.cs`
-- `apps/api/src/Sport.Core/DisciplineRegistry/DisciplineCode.cs`
-
-Each gets the single attribute line. Body unchanged.
-
-- [ ] **Step 3: Build and verify generators run**
+- [ ] **Step 1: Confirm no changes needed in `Sport.Core`**
 
 ```
-dotnet build apps/api/Sport.slnx
+git status apps/api/src/Sport.Core/
 ```
-Expected: 0 warnings, 0 errors. Each modified VO now has a generated `{Name}EfCoreValueConverter` accessible at compile time (no source visible — Vogen emits it as a roslyn analyzer).
+Expected: no changes (clean).
 
-If the build fails with `EfCoreConverter` not found, the Vogen package may not have it bundled — install `Vogen.EfCoreSupport` as a hint, otherwise rerun with `--verbosity normal` to see the analyzer error.
+- [ ] **Step 2: No commit**
 
-- [ ] **Step 4: Run the existing test suite to confirm no regression**
-
-```
-dotnet test "C:/Users/mella/WebstormProjects/daline-sys/apps/api/Sport.slnx"
-```
-Expected: 126 passed (existing). The attribute is purely additive.
-
-- [ ] **Step 5: Commit**
-
-```
-git add apps/api/src/Sport.Core/
-git commit -m "feat(core): add [EfCoreConverter] to all Vogen value objects"
-```
+Skip. Task 3 will create the marker class.
 
 ---
 
@@ -286,18 +232,68 @@ This prevents the Design package from being a transitive dependency.
 dotnet sln apps/api/Sport.slnx add apps/api/src/Sport.Infrastructure/Sport.Infrastructure.csproj
 ```
 
-- [ ] **Step 6: Build to confirm everything resolves**
+- [ ] **Step 6: Create `VogenEfCoreConverters.cs` marker class**
+
+This is the file Vogen 8 uses to generate EF Core converters in this project for VOs that live in `Sport.Core`. `Sport.Core` stays domain-pure (no EF Core reference).
+
+Path: `apps/api/src/Sport.Infrastructure/VogenEfCoreConverters.cs`
+```csharp
+using Sport.Core.Competitions;
+using Sport.Core.DisciplineRegistry;
+using Sport.Core.Officials;
+using Sport.Core.Participants;
+using Sport.Core.Structure;
+using Vogen;
+
+namespace Sport.Infrastructure;
+
+[EfCoreConverter<CompetitionId>]
+[EfCoreConverter<CompetitionDisciplineId>]
+[EfCoreConverter<CompetitionCode>]
+[EfCoreConverter<EventId>]
+[EfCoreConverter<PhaseId>]
+[EfCoreConverter<UnitId>]
+[EfCoreConverter<SubunitId>]
+[EfCoreConverter<Rsc>]
+[EfCoreConverter<EventTypeCode>]
+[EfCoreConverter<EventModifierCode>]
+[EfCoreConverter<PhaseCode>]
+[EfCoreConverter<UnitCode>]
+[EfCoreConverter<SubunitCode>]
+[EfCoreConverter<PersonId>]
+[EfCoreConverter<OrganisationId>]
+[EfCoreConverter<TeamId>]
+[EfCoreConverter<EntryId>]
+[EfCoreConverter<OrganisationCode>]
+[EfCoreConverter<TeamCode>]
+[EfCoreConverter<Bib>]
+[EfCoreConverter<OfficialAssignmentId>]
+[EfCoreConverter<FunctionCode>]
+[EfCoreConverter<DisciplineCode>]
+internal partial class VogenEfCoreConverters;
+```
+
+Vogen generates converters as nested classes under `VogenEfCoreConverters` (e.g. `VogenEfCoreConverters.CompetitionIdEfCoreValueConverter`). Configurations in Tasks 10–13 reference these nested types via the alias pattern or `HasVogenConversion()` extension that Vogen also generates.
+
+- [ ] **Step 7: Build to confirm everything resolves**
 
 ```
 dotnet build apps/api/Sport.slnx
 ```
-Expected: 0 warnings, 0 errors.
+Expected: 0 warnings, 0 errors. The Vogen generator runs and emits the marker class's nested converters.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 8: Run existing tests to confirm no regression**
+
+```
+dotnet test "C:/Users/mella/WebstormProjects/daline-sys/apps/api/Sport.slnx"
+```
+Expected: 126 passed.
+
+- [ ] **Step 9: Commit**
 
 ```
 git add apps/api/src/Sport.Infrastructure/ apps/api/Sport.slnx
-git commit -m "chore(infra): scaffold Sport.Infrastructure project"
+git commit -m "chore(infra): scaffold Sport.Infrastructure with Vogen EF Core marker class"
 ```
 
 ---
@@ -1029,10 +1025,10 @@ internal sealed class CompetitionConfiguration : IEntityTypeConfiguration<Compet
 
         b.HasKey(c => c.Id);
         b.Property(c => c.Id)
-            .HasConversion<CompetitionIdEfCoreValueConverter>();
+            .HasVogenConversion();
 
         b.Property(c => c.Code)
-            .HasConversion<CompetitionCodeEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(64)
             .IsRequired();
         b.HasIndex(c => c.Code).IsUnique();
@@ -1075,14 +1071,14 @@ internal sealed class CompetitionDisciplineConfiguration : IEntityTypeConfigurat
 
         b.HasKey(d => d.Id);
         b.Property(d => d.Id)
-            .HasConversion<CompetitionDisciplineIdEfCoreValueConverter>();
+            .HasVogenConversion();
 
         b.Property(d => d.CompetitionId)
-            .HasConversion<CompetitionIdEfCoreValueConverter>()
+            .HasVogenConversion()
             .IsRequired();
 
         b.Property(d => d.Code)
-            .HasConversion<DisciplineCodeEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(3)
             .IsRequired();
 
@@ -1240,30 +1236,30 @@ internal sealed class EventConfiguration : IEntityTypeConfiguration<Event>
         b.ToTable("events");
 
         b.HasKey(e => e.Id);
-        b.Property(e => e.Id).HasConversion<EventIdEfCoreValueConverter>();
+        b.Property(e => e.Id).HasVogenConversion();
 
         b.Property(e => e.CompetitionDisciplineId)
-            .HasConversion<CompetitionDisciplineIdEfCoreValueConverter>()
+            .HasVogenConversion()
             .IsRequired();
 
         b.Property(e => e.DisciplineCode)
-            .HasConversion<DisciplineCodeEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(3).IsRequired();
 
         b.Property(e => e.Gender).HasConversion<string>().HasMaxLength(1).IsRequired();
 
         b.Property(e => e.EventType)
-            .HasConversion<EventTypeCodeEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(8).IsRequired();
 
         b.Property(e => e.EventModifier)
-            .HasConversion<EventModifierCodeEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(10);
 
         b.Property(e => e.Name).HasMaxLength(200).IsRequired();
 
         b.Property(e => e.Rsc)
-            .HasConversion<RscEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(34).IsRequired();
         b.HasIndex(e => new { e.CompetitionDisciplineId, e.Rsc }).IsUnique();
 
@@ -1294,18 +1290,18 @@ internal sealed class PhaseConfiguration : IEntityTypeConfiguration<Phase>
         b.ToTable("phases");
 
         b.HasKey(p => p.Id);
-        b.Property(p => p.Id).HasConversion<PhaseIdEfCoreValueConverter>();
+        b.Property(p => p.Id).HasVogenConversion();
 
-        b.Property(p => p.EventId).HasConversion<EventIdEfCoreValueConverter>().IsRequired();
+        b.Property(p => p.EventId).HasVogenConversion().IsRequired();
 
         b.Property(p => p.Code)
-            .HasConversion<PhaseCodeEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(4).IsRequired();
 
         b.Property(p => p.Order).IsRequired();
 
         b.Property(p => p.Rsc)
-            .HasConversion<RscEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(34).IsRequired();
 
         b.HasIndex(p => new { p.EventId, p.Code }).IsUnique();
@@ -1338,18 +1334,18 @@ internal sealed class UnitConfiguration : IEntityTypeConfiguration<Unit>
         b.ToTable("units");
 
         b.HasKey(u => u.Id);
-        b.Property(u => u.Id).HasConversion<UnitIdEfCoreValueConverter>();
+        b.Property(u => u.Id).HasVogenConversion();
 
-        b.Property(u => u.PhaseId).HasConversion<PhaseIdEfCoreValueConverter>().IsRequired();
+        b.Property(u => u.PhaseId).HasVogenConversion().IsRequired();
 
         b.Property(u => u.Code)
-            .HasConversion<UnitCodeEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(8).IsRequired();
 
         b.Property(u => u.ScheduledStart);
 
         b.Property(u => u.Rsc)
-            .HasConversion<RscEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(34).IsRequired();
 
         b.Property(u => u.DisciplineUnitRef);
@@ -1383,16 +1379,16 @@ internal sealed class SubunitConfiguration : IEntityTypeConfiguration<Subunit>
         b.ToTable("subunits");
 
         b.HasKey(s => s.Id);
-        b.Property(s => s.Id).HasConversion<SubunitIdEfCoreValueConverter>();
+        b.Property(s => s.Id).HasVogenConversion();
 
-        b.Property(s => s.UnitId).HasConversion<UnitIdEfCoreValueConverter>().IsRequired();
+        b.Property(s => s.UnitId).HasVogenConversion().IsRequired();
 
         b.Property(s => s.Code)
-            .HasConversion<SubunitCodeEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(2).IsRequired();
 
         b.Property(s => s.Rsc)
-            .HasConversion<RscEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(34).IsRequired();
 
         b.HasIndex(s => new { s.UnitId, s.Code }).IsUnique();
@@ -1554,7 +1550,7 @@ internal sealed class PersonConfiguration : IEntityTypeConfiguration<Person>
         b.ToTable("persons");
 
         b.HasKey(p => p.Id);
-        b.Property(p => p.Id).HasConversion<PersonIdEfCoreValueConverter>();
+        b.Property(p => p.Id).HasVogenConversion();
 
         b.Property(p => p.FamilyName).HasMaxLength(50).IsRequired();
         b.Property(p => p.GivenName).HasMaxLength(50);
@@ -1584,10 +1580,10 @@ internal sealed class OrganisationConfiguration : IEntityTypeConfiguration<Organ
         b.ToTable("organisations");
 
         b.HasKey(o => o.Id);
-        b.Property(o => o.Id).HasConversion<OrganisationIdEfCoreValueConverter>();
+        b.Property(o => o.Id).HasVogenConversion();
 
         b.Property(o => o.Code)
-            .HasConversion<OrganisationCodeEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(10).IsRequired();
         b.HasIndex(o => o.Code).IsUnique();
 
@@ -1615,20 +1611,20 @@ internal sealed class TeamConfiguration : IEntityTypeConfiguration<Team>
         b.ToTable("teams");
 
         b.HasKey(t => t.Id);
-        b.Property(t => t.Id).HasConversion<TeamIdEfCoreValueConverter>();
+        b.Property(t => t.Id).HasVogenConversion();
 
         b.Property(t => t.Code)
-            .HasConversion<TeamCodeEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(20).IsRequired();
         b.HasIndex(t => t.Code).IsUnique();
 
         b.Property(t => t.Name).HasMaxLength(200).IsRequired();
 
         b.Property(t => t.OrganisationId)
-            .HasConversion<OrganisationIdEfCoreValueConverter>().IsRequired();
+            .HasVogenConversion().IsRequired();
 
         b.Property(t => t.DisciplineCode)
-            .HasConversion<DisciplineCodeEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(3).IsRequired();
     }
 }
@@ -1652,14 +1648,14 @@ internal sealed class EntryConfiguration : IEntityTypeConfiguration<Entry>
         b.ToTable("entries");
 
         b.HasKey(e => e.Id);
-        b.Property(e => e.Id).HasConversion<EntryIdEfCoreValueConverter>();
+        b.Property(e => e.Id).HasVogenConversion();
 
-        b.Property(e => e.EventId).HasConversion<EventIdEfCoreValueConverter>().IsRequired();
+        b.Property(e => e.EventId).HasVogenConversion().IsRequired();
         b.Property(e => e.Type).HasConversion<string>().HasMaxLength(10).IsRequired();
         b.Property(e => e.OrganisationId)
-            .HasConversion<OrganisationIdEfCoreValueConverter>().IsRequired();
-        b.Property(e => e.TeamId).HasConversion<TeamIdEfCoreValueConverter>();
-        b.Property(e => e.Bib).HasConversion<BibEfCoreValueConverter>().HasMaxLength(20);
+            .HasVogenConversion().IsRequired();
+        b.Property(e => e.TeamId).HasVogenConversion();
+        b.Property(e => e.Bib).HasVogenConversion().HasMaxLength(20);
         b.Property(e => e.Seed);
         b.Property(e => e.Status).HasConversion<string>().HasMaxLength(20).IsRequired();
 
@@ -1694,10 +1690,10 @@ internal sealed class CompositionMemberConfiguration : IEntityTypeConfiguration<
         // Composite key avoids needing an artificial id; CompositionMember is a record without Id.
         b.HasKey(m => new { m.EntryId, m.PersonId });
 
-        b.Property(m => m.EntryId).HasConversion<EntryIdEfCoreValueConverter>();
-        b.Property(m => m.PersonId).HasConversion<PersonIdEfCoreValueConverter>();
+        b.Property(m => m.EntryId).HasVogenConversion();
+        b.Property(m => m.PersonId).HasVogenConversion();
         b.Property(m => m.Order).IsRequired();
-        b.Property(m => m.Bib).HasConversion<BibEfCoreValueConverter>().HasMaxLength(20);
+        b.Property(m => m.Bib).HasVogenConversion().HasMaxLength(20);
 
         b.HasIndex(m => new { m.PersonId, m.EntryId }).IsUnique();
     }
@@ -1860,12 +1856,12 @@ internal sealed class OfficialAssignmentConfiguration : IEntityTypeConfiguration
         b.ToTable("official_assignments");
 
         b.HasKey(a => a.Id);
-        b.Property(a => a.Id).HasConversion<OfficialAssignmentIdEfCoreValueConverter>();
+        b.Property(a => a.Id).HasVogenConversion();
 
-        b.Property(a => a.PersonId).HasConversion<PersonIdEfCoreValueConverter>().IsRequired();
+        b.Property(a => a.PersonId).HasVogenConversion().IsRequired();
 
         b.Property(a => a.FunctionCode)
-            .HasConversion<FunctionCodeEfCoreValueConverter>()
+            .HasVogenConversion()
             .HasMaxLength(20).IsRequired();
 
         b.OwnsOne(a => a.Scope, sb =>
@@ -1874,7 +1870,7 @@ internal sealed class OfficialAssignmentConfiguration : IEntityTypeConfiguration
             sb.Property(s => s.TargetId).IsRequired().HasColumnName("scope_target_id");
         });
 
-        b.Property(a => a.OrganisationId).HasConversion<OrganisationIdEfCoreValueConverter>();
+        b.Property(a => a.OrganisationId).HasVogenConversion();
 
         b.Property(a => a.Status).HasConversion<string>().HasMaxLength(20).IsRequired();
 
