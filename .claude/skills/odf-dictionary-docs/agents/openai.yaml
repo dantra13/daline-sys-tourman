@@ -1,0 +1,4 @@
+interface:
+  display_name: "ODF Dictionary Docs"
+  short_description: "ODF dictionary Markdown references"
+  default_prompt: "Use $odf-dictionary-docs to create a structured Markdown reference from an ODF sport Data Dictionary PDF section."
