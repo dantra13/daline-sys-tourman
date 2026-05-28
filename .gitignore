@@ -8,3 +8,6 @@ obj/
 TestResults/
 .cache/
 .serena/
+
+# Local env vars (use .env.example as template)
+.env
