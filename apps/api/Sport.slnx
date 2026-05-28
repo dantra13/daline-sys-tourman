@@ -8,6 +8,7 @@
     <Project Path="src/Sport.Disciplines.BOX/Sport.Disciplines.BOX.csproj" />
     <Project Path="src/Sport.Disciplines.FBL/Sport.Disciplines.FBL.csproj" />
     <Project Path="src/Sport.Disciplines.VBV/Sport.Disciplines.VBV.csproj" />
+    <Project Path="src/Sport.Infrastructure/Sport.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Sport.Api.Tests/Sport.Api.Tests.csproj" />
@@ -19,5 +20,6 @@
     <Project Path="tests/Sport.Disciplines.BOX.Tests/Sport.Disciplines.BOX.Tests.csproj" />
     <Project Path="tests/Sport.Disciplines.FBL.Tests/Sport.Disciplines.FBL.Tests.csproj" />
     <Project Path="tests/Sport.Disciplines.VBV.Tests/Sport.Disciplines.VBV.Tests.csproj" />
+    <Project Path="tests/Sport.Infrastructure.Tests/Sport.Infrastructure.Tests.csproj" />
   </Folder>
 </Solution>

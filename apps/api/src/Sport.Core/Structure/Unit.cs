@@ -15,6 +15,11 @@ public sealed class Unit
 
     public Guid? DisciplineUnitRef { get; private set; }
 
+    // Required by EF Core materializer (cannot bind collection nav params).
+#pragma warning disable CS8618
+    private Unit() { _subunits = new List<Subunit>(); }
+#pragma warning restore CS8618
+
     private Unit(UnitId id, PhaseId phaseId, UnitCode code, DateTimeOffset? start, Rsc rsc, List<Subunit> subunits)
     {
         Id = id; PhaseId = phaseId; Code = code; ScheduledStart = start; Rsc = rsc; _subunits = subunits;

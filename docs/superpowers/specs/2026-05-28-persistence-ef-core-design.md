@@ -67,7 +67,7 @@ Esta spec produce:
 |---|---|---|
 | D1 | Alcance | Solo los 11 agregados raíz del core. |
 | D2 | Layout | Proyecto nuevo `Sport.Infrastructure`. `Sport.Core` permanece dominio puro. |
-| D3 | Vogen converters | Generación automática con `[EfCoreConverter]` por VO. |
+| D3 | Vogen converters | Generación automática con marker class en `Sport.Infrastructure` (atributos `[EfCoreConverter<T>]`) — Sport.Core no referencia EF Core. |
 | D4 | Migraciones | Auto-apply en `Development`; manual en otros entornos. |
 | D5 | Tests | Testcontainers + Respawn; proyecto nuevo `Sport.Infrastructure.Tests`. |
 | D6 | `/health/ready` | Reemplazado por health-check pipeline con `AddDbContextCheck<SportDbContext>`. |
@@ -124,7 +124,7 @@ Declarados explícitamente en `Sport.Infrastructure.csproj`:
 - `EFCore.NamingConventions`
 - `Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore`
 - `Microsoft.Extensions.Hosting.Abstractions`
-- `Vogen` (para que `[EfCoreConverter]` resuelva)
+- `Vogen` (para que `[EfCoreConverter<T>]` y `HasVogenConversion()` extension resuelvan)
 
 `Sport.Api.csproj` agrega una `ProjectReference` a `Sport.Infrastructure`.
 
@@ -322,24 +322,53 @@ internal sealed class CompetitionConfiguration : IEntityTypeConfiguration<Compet
 }
 ```
 
-### 6.4 `Sport.Core` cambio menor — atributos `[EfCoreConverter]`
+### 6.4 Marker class en `Sport.Infrastructure` — `[EfCoreConverter<T>]`
 
-Cada uno de los 23 VOs Vogen suma el atributo. Ejemplo:
+Vogen 8 soporta un patrón "marker class" para Onion/Clean Architecture: el atributo `[EfCoreConverter<T>]` se coloca en un archivo del proyecto consumidor (`Sport.Infrastructure`), NO en el VO. Vogen genera los converters dentro del marker class, en `Sport.Infrastructure`.
+
+`Sport.Core` queda 100% dominio puro — sin referencia a `Microsoft.EntityFrameworkCore`.
+
+Path: `apps/api/src/Sport.Infrastructure/VogenEfCoreConverters.cs`
 
 ```csharp
-[ValueObject<Guid>]
-[EfCoreConverter]
-public readonly partial struct CompetitionId
-{
-    public static CompetitionId New() => From(Guid.CreateVersion7());
-}
+using Sport.Core.Competitions;
+using Sport.Core.DisciplineRegistry;
+using Sport.Core.Officials;
+using Sport.Core.Participants;
+using Sport.Core.Structure;
+using Vogen;
+
+namespace Sport.Infrastructure;
+
+[EfCoreConverter<CompetitionId>]
+[EfCoreConverter<CompetitionDisciplineId>]
+[EfCoreConverter<CompetitionCode>]
+[EfCoreConverter<EventId>]
+[EfCoreConverter<PhaseId>]
+[EfCoreConverter<UnitId>]
+[EfCoreConverter<SubunitId>]
+[EfCoreConverter<Rsc>]
+[EfCoreConverter<EventTypeCode>]
+[EfCoreConverter<EventModifierCode>]
+[EfCoreConverter<PhaseCode>]
+[EfCoreConverter<UnitCode>]
+[EfCoreConverter<SubunitCode>]
+[EfCoreConverter<PersonId>]
+[EfCoreConverter<OrganisationId>]
+[EfCoreConverter<TeamId>]
+[EfCoreConverter<EntryId>]
+[EfCoreConverter<OrganisationCode>]
+[EfCoreConverter<TeamCode>]
+[EfCoreConverter<Bib>]
+[EfCoreConverter<OfficialAssignmentId>]
+[EfCoreConverter<FunctionCode>]
+[EfCoreConverter<DisciplineCode>]
+internal partial class VogenEfCoreConverters;
 ```
 
-Vogen genera `CompetitionIdEfCoreValueConverter` en el mismo namespace. No requiere `Sport.Core` referenciar EF Core — el converter generado es independiente y se usa desde `Sport.Infrastructure` que sí referencia EF Core. Verificación: NetArchTest sigue afirmando que `Sport.Core` no depende de `Microsoft.EntityFrameworkCore.*`.
+Vogen genera converters como `VogenEfCoreConverters.CompetitionIdEfCoreValueConverter` (nested). Las configurations los referencian o usan la extension `HasVogenConversion()` que Vogen también genera.
 
-VOs que llevan `[EfCoreConverter]`:
-- IDs (11): `CompetitionId`, `CompetitionDisciplineId`, `EventId`, `PhaseId`, `UnitId`, `SubunitId`, `PersonId`, `OrganisationId`, `TeamId`, `EntryId`, `OfficialAssignmentId`.
-- Strings (12): `Rsc`, `DisciplineCode`, `EventTypeCode`, `EventModifierCode`, `PhaseCode`, `UnitCode`, `SubunitCode`, `OrganisationCode`, `TeamCode`, `FunctionCode`, `CompetitionCode`, `Bib`.
+NetArchTest confirma que `Sport.Core` NO referencia `Microsoft.EntityFrameworkCore.*`.
 
 ## 7. Migraciones
 

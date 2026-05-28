@@ -76,4 +76,59 @@ public class ArchitectureRules
                 $"'{name}.Id' must be a Vogen typed ID, not raw Guid");
         }
     }
+
+    private static readonly System.Reflection.Assembly InfrastructureAssembly =
+        typeof(Sport.Infrastructure.SportDbContext).Assembly;
+
+    [Fact]
+    public void Sport_Core_does_not_reference_Sport_Infrastructure()
+    {
+        var result = Types.InAssembly(CoreAssembly)
+            .Should().NotHaveDependencyOn("Sport.Infrastructure")
+            .GetResult();
+        result.IsSuccessful.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Discipline_modules_do_not_reference_Sport_Infrastructure()
+    {
+        foreach (var asm in DisciplineAssemblies)
+        {
+            var result = Types.InAssembly(asm)
+                .Should().NotHaveDependencyOn("Sport.Infrastructure")
+                .GetResult();
+            result.IsSuccessful.Should().BeTrue($"{asm.GetName().Name} must not depend on Sport.Infrastructure");
+        }
+    }
+
+    [Fact]
+    public void Sport_Infrastructure_references_Sport_Core()
+    {
+        var referencedAssemblies = InfrastructureAssembly
+            .GetReferencedAssemblies()
+            .Select(a => a.Name)
+            .ToList();
+        referencedAssemblies.Should().Contain("Sport.Core",
+            "Sport.Infrastructure must have a compile-time reference to Sport.Core");
+    }
+
+    [Fact]
+    public void Sport_Core_does_not_reference_EntityFrameworkCore()
+    {
+        var result = Types.InAssembly(CoreAssembly)
+            .Should().NotHaveDependencyOn("Microsoft.EntityFrameworkCore")
+            .GetResult();
+        result.IsSuccessful.Should().BeTrue("Sport.Core must remain domain-pure");
+    }
+
+    [Fact]
+    public void All_EntityTypeConfigurations_are_internal_sealed()
+    {
+        var result = Types.InAssembly(InfrastructureAssembly)
+            .That().ImplementInterface(typeof(Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<>))
+            .Should().BeSealed()
+            .And().NotBePublic()
+            .GetResult();
+        result.IsSuccessful.Should().BeTrue();
+    }
 }

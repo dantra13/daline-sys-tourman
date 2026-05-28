@@ -6,14 +6,15 @@ FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-alpine AS restore
 WORKDIR /src
 COPY Directory.Build.props ./
 COPY Sport.slnx ./
-COPY src/Sport.Core/Sport.Core.csproj                       src/Sport.Core/
-COPY src/Sport.Disciplines.FBL/Sport.Disciplines.FBL.csproj src/Sport.Disciplines.FBL/
-COPY src/Sport.Disciplines.BKB/Sport.Disciplines.BKB.csproj src/Sport.Disciplines.BKB/
-COPY src/Sport.Disciplines.BDM/Sport.Disciplines.BDM.csproj src/Sport.Disciplines.BDM/
-COPY src/Sport.Disciplines.VBV/Sport.Disciplines.VBV.csproj src/Sport.Disciplines.VBV/
-COPY src/Sport.Disciplines.BOX/Sport.Disciplines.BOX.csproj src/Sport.Disciplines.BOX/
-COPY src/Sport.Disciplines.ATH/Sport.Disciplines.ATH.csproj src/Sport.Disciplines.ATH/
-COPY src/Sport.Api/Sport.Api.csproj                         src/Sport.Api/
+COPY src/Sport.Core/Sport.Core.csproj                               src/Sport.Core/
+COPY src/Sport.Disciplines.FBL/Sport.Disciplines.FBL.csproj         src/Sport.Disciplines.FBL/
+COPY src/Sport.Disciplines.BKB/Sport.Disciplines.BKB.csproj         src/Sport.Disciplines.BKB/
+COPY src/Sport.Disciplines.BDM/Sport.Disciplines.BDM.csproj         src/Sport.Disciplines.BDM/
+COPY src/Sport.Disciplines.VBV/Sport.Disciplines.VBV.csproj         src/Sport.Disciplines.VBV/
+COPY src/Sport.Disciplines.BOX/Sport.Disciplines.BOX.csproj         src/Sport.Disciplines.BOX/
+COPY src/Sport.Disciplines.ATH/Sport.Disciplines.ATH.csproj         src/Sport.Disciplines.ATH/
+COPY src/Sport.Infrastructure/Sport.Infrastructure.csproj           src/Sport.Infrastructure/
+COPY src/Sport.Api/Sport.Api.csproj                                 src/Sport.Api/
 RUN --mount=type=cache,id=nuget-daline-api,target=/root/.nuget/packages \
     dotnet restore src/Sport.Api/Sport.Api.csproj
 

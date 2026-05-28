@@ -8,13 +8,16 @@ public sealed class CompetitionDiscipline
     public CompetitionDisciplineId Id { get; }
     public CompetitionId CompetitionId { get; }
     public DisciplineCode Code { get; }
-    public IReadOnlySet<GenderCode> EnabledGenders { get; }
+    public IReadOnlyList<GenderCode> EnabledGenders { get; }
+
+    // Private parameterless ctor needed by EF.
+    private CompetitionDiscipline() { EnabledGenders = Array.Empty<GenderCode>(); }
 
     private CompetitionDiscipline(
         CompetitionDisciplineId id,
         CompetitionId competitionId,
         DisciplineCode code,
-        IReadOnlySet<GenderCode> enabledGenders)
+        IReadOnlyList<GenderCode> enabledGenders)
     {
         Id = id;
         CompetitionId = competitionId;
@@ -30,6 +33,7 @@ public sealed class CompetitionDiscipline
     {
         if (enabledGenders is null || enabledGenders.Count == 0)
             throw new DomainException("A CompetitionDiscipline must enable at least one gender.");
-        return new CompetitionDiscipline(id, competitionId, code, enabledGenders);
+        // Store as array; dedup preserved because input is a set.
+        return new CompetitionDiscipline(id, competitionId, code, enabledGenders.ToArray());
     }
 }

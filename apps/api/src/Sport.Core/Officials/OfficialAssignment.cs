@@ -13,6 +13,11 @@ public sealed class OfficialAssignment
     public OrganisationId? OrganisationId { get; }
     public OfficialAssignmentStatus Status { get; private set; }
 
+    // Required by EF Core materializer (cannot bind ComplexProperty params).
+#pragma warning disable CS8618
+    private OfficialAssignment() { }
+#pragma warning restore CS8618
+
     private OfficialAssignment(
         OfficialAssignmentId id, PersonId personId, FunctionCode functionCode,
         OfficialScope scope, OrganisationId? organisationId)
