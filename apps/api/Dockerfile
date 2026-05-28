@@ -14,13 +14,13 @@ COPY src/Sport.Disciplines.VBV/Sport.Disciplines.VBV.csproj src/Sport.Discipline
 COPY src/Sport.Disciplines.BOX/Sport.Disciplines.BOX.csproj src/Sport.Disciplines.BOX/
 COPY src/Sport.Disciplines.ATH/Sport.Disciplines.ATH.csproj src/Sport.Disciplines.ATH/
 COPY src/Sport.Api/Sport.Api.csproj                         src/Sport.Api/
-RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+RUN --mount=type=cache,id=nuget-daline-api,target=/root/.nuget/packages \
     dotnet restore src/Sport.Api/Sport.Api.csproj
 
 # --- build + publish stage ---------------------------------------------------
 FROM restore AS publish
 COPY src/ ./src/
-RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+RUN --mount=type=cache,id=nuget-daline-api,target=/root/.nuget/packages \
     dotnet publish src/Sport.Api/Sport.Api.csproj \
         -c Release \
         -o /app \
