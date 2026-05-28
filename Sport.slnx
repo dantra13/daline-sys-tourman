@@ -1,10 +1,20 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Sport.Core/Sport.Core.csproj" />
+    <Project Path="src/Sport.Disciplines.ATH/Sport.Disciplines.ATH.csproj" />
+    <Project Path="src/Sport.Disciplines.BDM/Sport.Disciplines.BDM.csproj" />
+    <Project Path="src/Sport.Disciplines.BKB/Sport.Disciplines.BKB.csproj" />
+    <Project Path="src/Sport.Disciplines.BOX/Sport.Disciplines.BOX.csproj" />
     <Project Path="src/Sport.Disciplines.FBL/Sport.Disciplines.FBL.csproj" />
+    <Project Path="src/Sport.Disciplines.VBV/Sport.Disciplines.VBV.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Sport.Core.Tests/Sport.Core.Tests.csproj" />
+    <Project Path="tests/Sport.Disciplines.ATH.Tests/Sport.Disciplines.ATH.Tests.csproj" />
+    <Project Path="tests/Sport.Disciplines.BDM.Tests/Sport.Disciplines.BDM.Tests.csproj" />
+    <Project Path="tests/Sport.Disciplines.BKB.Tests/Sport.Disciplines.BKB.Tests.csproj" />
+    <Project Path="tests/Sport.Disciplines.BOX.Tests/Sport.Disciplines.BOX.Tests.csproj" />
     <Project Path="tests/Sport.Disciplines.FBL.Tests/Sport.Disciplines.FBL.Tests.csproj" />
+    <Project Path="tests/Sport.Disciplines.VBV.Tests/Sport.Disciplines.VBV.Tests.csproj" />
   </Folder>
 </Solution>
