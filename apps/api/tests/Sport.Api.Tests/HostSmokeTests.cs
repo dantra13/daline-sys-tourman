@@ -1,6 +1,8 @@
 using System.Net;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using Sport.Core.DisciplineRegistry;
 
 namespace Sport.Api.Tests;
 
@@ -31,5 +33,17 @@ public class HostSmokeTests : IClassFixture<WebApplicationFactory<Program>>
 
         var body = await response.Content.ReadAsStringAsync();
         body.Should().Contain("ready");
+    }
+
+    [Fact]
+    public void Registry_has_all_six_disciplines_registered()
+    {
+        using var factory  = new WebApplicationFactory<Program>();
+        using var scope    = factory.Services.CreateScope();
+        var registry       = scope.ServiceProvider.GetRequiredService<IDisciplineRegistry>();
+
+        registry.RegisteredCodes.Should().HaveCount(6);
+        var codes = registry.RegisteredCodes.Select(c => c.Value).ToHashSet();
+        codes.Should().BeEquivalentTo(new[] { "FBL", "BKB", "BDM", "VBV", "BOX", "ATH" });
     }
 }
