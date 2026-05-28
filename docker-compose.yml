@@ -11,6 +11,8 @@ services:
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
+      # Mount the parent dir (not /data) because postgres:18+ uses PGDATA=/var/lib/postgresql/<MAJOR>/docker.
+      # Parent mount is upgrade-friendly across major versions.
       - postgres-data:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sport} -d ${POSTGRES_DB:-sport}"]
