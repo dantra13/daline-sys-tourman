@@ -1,8 +1,10 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Sport.Core/Sport.Core.csproj" />
+    <Project Path="src/Sport.Disciplines.FBL/Sport.Disciplines.FBL.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Sport.Core.Tests/Sport.Core.Tests.csproj" />
+    <Project Path="tests/Sport.Disciplines.FBL.Tests/Sport.Disciplines.FBL.Tests.csproj" />
   </Folder>
 </Solution>
