@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Sport.Core\Sport.Core.csproj" />
+    <ProjectReference Include="..\..\src\Sport.Disciplines.FBL\Sport.Disciplines.FBL.csproj" />
   </ItemGroup>
 
 </Project>
