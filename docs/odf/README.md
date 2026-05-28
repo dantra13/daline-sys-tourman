@@ -6,7 +6,8 @@ Working notes for Olympic Data Feed interface material.
 
 | Section | Scope |
 |---|---|
-| [Concept references](concepts/README.md) | Cross-cutting ODF hierarchy, scheduling, and period semantics. |
+| [Foundation Principles](foundation-principles-r-sog-2024-fnd.md) | Complete Markdown extraction of the ODF Foundation Principles R-SOG-2024 FND V2.3 APP PDF. |
+| [Concept references](concepts/README.md) | Deprecated historical notes; prefer the Foundation Principles extraction for source coverage. |
 | [General interface](general-interface/README.md) | Generic ODF GEN messages, schema package notes, and document control. |
 | [Disciplines](disciplines/) | Sport-specific data dictionary notes, grouped by discipline code. |
 
