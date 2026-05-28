@@ -39,3 +39,35 @@ API at `http://localhost:8080`. Health endpoint at `/health`.
 ```
 dotnet test apps/api/Sport.slnx
 ```
+
+## Auditing queries
+
+EF Core logs slow queries (default threshold 200 ms) to the API logs:
+
+```
+docker compose --profile api logs api | grep "Slow query"
+```
+
+Postgres-level stats via pg_stat_statements:
+
+```
+docker compose exec postgres psql -U sport -d sport -c \
+  "SELECT calls, round(total_exec_time::numeric, 2) AS total_ms, \
+          round(mean_exec_time::numeric, 2) AS mean_ms, query \
+     FROM pg_stat_statements \
+    ORDER BY total_exec_time DESC \
+    LIMIT 20;"
+```
+
+Reset stats after optimizing:
+
+```
+docker compose exec postgres psql -U sport -d sport -c "SELECT pg_stat_statements_reset();"
+```
+
+Ad-hoc EXPLAIN ANALYZE on a query:
+
+```
+docker compose exec postgres psql -U sport -d sport -c \
+  "EXPLAIN (ANALYZE, BUFFERS) <your sql>;"
+```
