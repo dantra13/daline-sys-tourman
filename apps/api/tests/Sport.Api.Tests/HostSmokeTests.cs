@@ -56,4 +56,14 @@ public class HostSmokeTests : IClassFixture<WebApplicationFactory<Program>>
         var body = await response.Content.ReadAsStringAsync();
         body.Should().Contain("openapi");
     }
+
+    [Fact]
+    public async Task Scalar_ui_is_reachable()
+    {
+        var response = await _client.GetAsync("/scalar/v1");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var contentType = response.Content.Headers.ContentType?.MediaType;
+        contentType.Should().Be("text/html");
+    }
 }
