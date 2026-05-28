@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Sport.Api": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5080",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings__Postgres": "Host=localhost;Port=5432;Database=sport;Username=sport;Password=change-me-locally"
+      }
+    }
+  }
+}
