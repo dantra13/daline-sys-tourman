@@ -17,7 +17,7 @@ public sealed class PersonOrganisationTeamPersistenceTests : IClassFixture<Sport
         _fixture.ResetAsync().GetAwaiter().GetResult();
     }
 
-    [Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]
+    [Fact]
     public async Task Round_trips_person_organisation_team()
     {
         var org = Organisation.Create(OrganisationId.New(), OrganisationCode.From("ESP"), "Spain", OrganisationType.Noc);

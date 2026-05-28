@@ -38,11 +38,11 @@ internal sealed class EventConfiguration : IEntityTypeConfiguration<Event>
             .HasMaxLength(34).IsRequired();
         b.HasIndex(e => new { e.CompetitionDisciplineId, e.Rsc }).IsUnique();
 
-        b.HasMany<Phase>("_phases")
+        b.HasMany(e => e.Phases)
             .WithOne()
             .HasForeignKey(p => p.EventId)
             .OnDelete(DeleteBehavior.Cascade);
-        b.Metadata.FindNavigation("_phases")!
-            .SetPropertyAccessMode(PropertyAccessMode.Field);
+        b.Navigation(e => e.Phases)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

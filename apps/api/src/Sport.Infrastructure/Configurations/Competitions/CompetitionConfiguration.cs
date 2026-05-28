@@ -27,12 +27,12 @@ internal sealed class CompetitionConfiguration : IEntityTypeConfiguration<Compet
             dr.Property(d => d.End)  .HasColumnName("dates_end")  .IsRequired();
         });
 
-        b.HasMany<CompetitionDiscipline>("_disciplines")
+        b.HasMany(c => c.Disciplines)
             .WithOne()
             .HasForeignKey(d => d.CompetitionId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        b.Metadata.FindNavigation("_disciplines")!
-            .SetPropertyAccessMode(PropertyAccessMode.Field);
+        b.Navigation(c => c.Disciplines)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

@@ -28,11 +28,11 @@ internal sealed class PhaseConfiguration : IEntityTypeConfiguration<Phase>
         b.HasIndex(p => new { p.EventId, p.Code }).IsUnique();
         b.HasIndex(p => new { p.EventId, p.Order }).IsUnique();
 
-        b.HasMany<Unit>("_units")
+        b.HasMany(p => p.Units)
             .WithOne()
             .HasForeignKey(u => u.PhaseId)
             .OnDelete(DeleteBehavior.Cascade);
-        b.Metadata.FindNavigation("_units")!
-            .SetPropertyAccessMode(PropertyAccessMode.Field);
+        b.Navigation(p => p.Units)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

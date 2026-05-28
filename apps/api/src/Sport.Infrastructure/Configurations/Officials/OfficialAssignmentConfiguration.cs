@@ -33,7 +33,8 @@ internal sealed class OfficialAssignmentConfiguration : IEntityTypeConfiguration
 
         b.Property(a => a.Status).HasConversion<string>().HasMaxLength(20).IsRequired();
 
-        // Index spans owned-type columns via shadow access; declare via raw column names.
-        b.HasIndex("scope_level", "scope_target_id", "function_code");
+        // Note: composite index over (scope_level, scope_target_id, function_code) is added
+        // directly in the migration via migrationBuilder.CreateIndex because EF Core's HasIndex
+        // does not support ComplexProperty member paths.
     }
 }

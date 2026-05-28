@@ -29,11 +29,11 @@ internal sealed class UnitConfiguration : IEntityTypeConfiguration<Unit>
 
         b.HasIndex(u => new { u.PhaseId, u.Code }).IsUnique();
 
-        b.HasMany<Subunit>("_subunits")
+        b.HasMany(u => u.Subunits)
             .WithOne()
             .HasForeignKey(s => s.UnitId)
             .OnDelete(DeleteBehavior.Cascade);
-        b.Metadata.FindNavigation("_subunits")!
-            .SetPropertyAccessMode(PropertyAccessMode.Field);
+        b.Navigation(u => u.Subunits)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

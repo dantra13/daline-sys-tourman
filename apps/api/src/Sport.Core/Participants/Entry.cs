@@ -17,6 +17,11 @@ public sealed class Entry
     private readonly List<CompositionMember> _composition;
     public IReadOnlyList<CompositionMember> Composition => _composition;
 
+    // Required by EF Core materializer (cannot bind collection nav params).
+#pragma warning disable CS8618
+    private Entry() { _composition = new List<CompositionMember>(); }
+#pragma warning restore CS8618
+
     private Entry(
         EntryId id, EventId eventId, EntryType type, OrganisationId organisationId,
         TeamId? teamId, Bib? bib, int? seed, List<CompositionMember> composition)

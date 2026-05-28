@@ -21,7 +21,7 @@ public sealed class EventPersistenceTests : IClassFixture<SportDbContextFixture>
         _fixture.ResetAsync().GetAwaiter().GetResult();
     }
 
-    [Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]
+    [Fact]
     public async Task Round_trips_an_event_with_its_rsc()
     {
         var ev = Event.Create(

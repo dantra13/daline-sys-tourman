@@ -12,6 +12,11 @@ public sealed class Person
     public DateOnly? BirthDate { get; }
     public string? IFId { get; }
 
+    // Required by EF Core materializer (constructor param names don't match property names).
+#pragma warning disable CS8618
+    private Person() { }
+#pragma warning restore CS8618
+
     private Person(PersonId id, string family, string? given, GenderCode gender, DateOnly? birth, string? ifId)
     {
         Id = id; FamilyName = family; GivenName = given; Gender = gender; BirthDate = birth; IFId = ifId;

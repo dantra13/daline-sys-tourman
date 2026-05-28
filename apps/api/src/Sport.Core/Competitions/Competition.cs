@@ -13,6 +13,11 @@ public sealed class Competition
     private readonly List<CompetitionDiscipline> _disciplines;
     public IReadOnlyList<CompetitionDiscipline> Disciplines => _disciplines;
 
+    // Required by EF Core materializer (cannot bind ComplexProperty or collection nav params).
+#pragma warning disable CS8618
+    private Competition() { _disciplines = new List<CompetitionDiscipline>(); }
+#pragma warning restore CS8618
+
     private Competition(
         CompetitionId id,
         CompetitionCode code,

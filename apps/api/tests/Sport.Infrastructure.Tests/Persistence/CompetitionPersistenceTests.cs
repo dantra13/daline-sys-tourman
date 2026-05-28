@@ -27,7 +27,7 @@ public sealed class CompetitionPersistenceTests : IClassFixture<SportDbContextFi
         return reg;
     }
 
-    [Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]
+    [Fact]
     public async Task Round_trips_a_competition_with_disciplines_and_genders_array()
     {
         var comp = Competition.Create(
@@ -58,7 +58,7 @@ public sealed class CompetitionPersistenceTests : IClassFixture<SportDbContextFi
         loaded.Disciplines.Single().EnabledGenders.Should().BeEquivalentTo(new[] { GenderCode.M });
     }
 
-    [Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]
+    [Fact]
     public async Task Code_unique_constraint_is_enforced_at_db_level()
     {
         var registry = MakeRegistry();

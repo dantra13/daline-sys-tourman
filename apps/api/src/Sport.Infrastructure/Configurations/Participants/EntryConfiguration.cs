@@ -34,11 +34,11 @@ internal sealed class EntryConfiguration : IEntityTypeConfiguration<Entry>
 
         b.HasIndex(e => new { e.EventId, e.Status });
 
-        b.HasMany<CompositionMember>("_composition")
+        b.HasMany(e => e.Composition)
             .WithOne()
             .HasForeignKey(m => m.EntryId)
             .OnDelete(DeleteBehavior.Cascade);
-        b.Metadata.FindNavigation("_composition")!
-            .SetPropertyAccessMode(PropertyAccessMode.Field);
+        b.Navigation(e => e.Composition)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

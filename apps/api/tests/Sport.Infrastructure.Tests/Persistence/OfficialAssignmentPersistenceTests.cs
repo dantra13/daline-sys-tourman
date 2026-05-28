@@ -18,7 +18,7 @@ public sealed class OfficialAssignmentPersistenceTests : IClassFixture<SportDbCo
         _fixture.ResetAsync().GetAwaiter().GetResult();
     }
 
-    [Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]
+    [Fact]
     public async Task Round_trips_official_assignment_with_owned_scope()
     {
         var descriptor = new FunctionDescriptor(

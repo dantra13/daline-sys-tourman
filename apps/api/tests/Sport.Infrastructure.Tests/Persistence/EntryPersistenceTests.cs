@@ -17,7 +17,7 @@ public sealed class EntryPersistenceTests : IClassFixture<SportDbContextFixture>
         _fixture.ResetAsync().GetAwaiter().GetResult();
     }
 
-    [Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]
+    [Fact]
     public async Task Round_trips_entry_with_composition()
     {
         var members = Enumerable.Range(1, 3)
@@ -44,7 +44,7 @@ public sealed class EntryPersistenceTests : IClassFixture<SportDbContextFixture>
         loaded.Composition.Should().HaveCount(3);
     }
 
-    [Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]
+    [Fact]
     public async Task Status_transitions_persist()
     {
         var entry = Entry.Create(

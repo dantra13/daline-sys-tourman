@@ -16,7 +16,7 @@ public sealed class PhaseUnitSubunitPersistenceTests : IClassFixture<SportDbCont
         _fixture.ResetAsync().GetAwaiter().GetResult();
     }
 
-    [Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]
+    [Fact]
     public async Task Round_trips_phase_unit_subunit_hierarchy()
     {
         var phase = Phase.Create(PhaseId.New(), EventId.New(), PhaseCode.From("QFNL"), 1,
