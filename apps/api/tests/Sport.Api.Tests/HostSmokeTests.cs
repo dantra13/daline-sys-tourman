@@ -22,4 +22,14 @@ public class HostSmokeTests : IClassFixture<WebApplicationFactory<Program>>
         var body = await response.Content.ReadAsStringAsync();
         body.Should().Contain("alive");
     }
+
+    [Fact]
+    public async Task Ready_returns_200_with_status_ready()
+    {
+        var response = await _client.GetAsync("/health/ready");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var body = await response.Content.ReadAsStringAsync();
+        body.Should().Contain("ready");
+    }
 }
