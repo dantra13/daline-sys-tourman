@@ -1,5 +1,7 @@
 # Sport Core Implementation Plan
 
+> **Historical note (2026-05-28):** This plan was executed on `feat/sport-core-conceptual-model` and merged to main. Afterwards the repo was reorganized into a monorepo layout: all paths shown below as `src/...`, `tests/...`, `Sport.slnx`, `Directory.Build.props` now live under `apps/api/` (so e.g. `src/Sport.Core/` is `apps/api/src/Sport.Core/`). The plan is preserved as a record of how the work was done.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build the conceptual sport core (`Sport.Core` + 6 discipline modules) — entities, value objects, invariants, and the `IDisciplineModule` plug-in contract — exactly as specified in `docs/superpowers/specs/2026-05-27-core-deportivo-design.md`.
