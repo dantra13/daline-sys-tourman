@@ -1,3 +1,4 @@
+using Scalar.AspNetCore;
 using Sport.Core.DisciplineRegistry;
 using Sport.Disciplines.ATH;
 using Sport.Disciplines.BDM;
@@ -17,10 +18,14 @@ builder.Services
     .AddDisciplineModule<BoxModule>()
     .AddDisciplineModule<AthModule>();
 
+builder.Services.AddOpenApi();
+
 var app = builder.Build();
 
-// Force registry construction at startup so any module registration error is fail-fast.
 app.Services.BuildSportRegistry();
+
+app.MapOpenApi();
+app.MapScalarApiReference();
 
 app.MapGet("/",             () => Results.Ok(new { name = "Sport.Api" }));
 app.MapGet("/health",       () => Results.Ok(new { status = "alive" }));

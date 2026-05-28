@@ -46,4 +46,14 @@ public class HostSmokeTests : IClassFixture<WebApplicationFactory<Program>>
         var codes = registry.RegisteredCodes.Select(c => c.Value).ToHashSet();
         codes.Should().BeEquivalentTo(new[] { "FBL", "BKB", "BDM", "VBV", "BOX", "ATH" });
     }
+
+    [Fact]
+    public async Task OpenApi_document_is_served()
+    {
+        var response = await _client.GetAsync("/openapi/v1.json");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var body = await response.Content.ReadAsStringAsync();
+        body.Should().Contain("openapi");
+    }
 }
