@@ -8,6 +8,7 @@
     <Project Path="src/Sport.Disciplines.BOX/Sport.Disciplines.BOX.csproj" />
     <Project Path="src/Sport.Disciplines.FBL/Sport.Disciplines.FBL.csproj" />
     <Project Path="src/Sport.Disciplines.VBV/Sport.Disciplines.VBV.csproj" />
+    <Project Path="src/Sport.Infrastructure/Sport.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Sport.Api.Tests/Sport.Api.Tests.csproj" />
