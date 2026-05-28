@@ -33,6 +33,8 @@ internal sealed class EntryConfiguration : IEntityTypeConfiguration<Entry>
         b.Property(e => e.Status).HasConversion<string>().HasMaxLength(20).IsRequired();
 
         b.HasIndex(e => new { e.EventId, e.Status });
+        b.HasIndex(e => e.OrganisationId);
+        b.HasIndex(e => e.TeamId);
 
         b.HasMany(e => e.Composition)
             .WithOne()

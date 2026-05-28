@@ -15,6 +15,7 @@ internal sealed class OfficialAssignmentConfiguration : IEntityTypeConfiguration
         b.Property(a => a.Id).HasVogenConversion();
 
         b.Property(a => a.PersonId).HasVogenConversion().IsRequired();
+        b.HasIndex(a => a.PersonId);
 
         b.Property(a => a.FunctionCode)
             .HasVogenConversion()
