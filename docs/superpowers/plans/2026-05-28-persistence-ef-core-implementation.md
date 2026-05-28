@@ -996,9 +996,9 @@ git commit -m "test(infra): add Postgres fixture, DbContext fixture, command cou
 
 Each configuration task follows the same shape: write a failing roundtrip test against the fixture; add the configuration; the test goes green when a migration is generated (which we do once at the end). To unblock the early tests, we generate an interim migration after the first aggregate is mapped (Task 10), then update it after each subsequent task.
 
-Alternative: each task generates its migration. This produces lots of small migrations. To keep history clean, we instead generate ONE migration at the end (Task 14), and tests in Tasks 13–16 are written but skipped until Task 14 lands. We follow the second approach.
+Alternative: each task generates its migration. This produces lots of small migrations. To keep history clean, we instead generate ONE migration at the end (Task 14), and tests in Tasks 10–13 are written but skipped until Task 14 lands. We follow the second approach.
 
-> **Important:** Tasks 13–16 implement configurations and write tests that target the future migrated schema. The test code is committed but marked `[Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]`. After Task 14, we unskip in a single sweep and run the suite.
+> **Important:** Tasks 10–13 implement configurations and write tests that target the future migrated schema. The test code is committed but marked `[Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]`. After Task 14, we unskip in a single sweep and run the suite.
 
 This keeps each task bite-sized and avoids regenerating migrations 5 times.
 
@@ -1990,7 +1990,7 @@ Inspect the `Up` method of the migration. Confirm `CreateTable` calls for: `comp
 
 - [ ] **Step 4: Unskip all `[Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]` attributes**
 
-For each persistence test file listed in Tasks 13–16, replace every `[Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]` with `[Fact]`. Use a global search-and-replace across `apps/api/tests/Sport.Infrastructure.Tests/Persistence/`.
+For each persistence test file listed in Tasks 10–13, replace every `[Fact(Skip = "Run after InitialCreate migration is generated in Task 14")]` with `[Fact]`. Use a global search-and-replace across `apps/api/tests/Sport.Infrastructure.Tests/Persistence/`.
 
 - [ ] **Step 5: Run all infrastructure tests**
 
