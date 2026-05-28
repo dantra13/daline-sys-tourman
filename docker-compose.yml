@@ -4,6 +4,14 @@ services:
   postgres:
     image: postgres:18-alpine
     container_name: daline-postgres
+    command:
+      - "postgres"
+      - "-c"
+      - "shared_preload_libraries=pg_stat_statements"
+      - "-c"
+      - "pg_stat_statements.max=10000"
+      - "-c"
+      - "pg_stat_statements.track=all"
     environment:
       POSTGRES_USER:     ${POSTGRES_USER:-sport}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?password is required}
@@ -14,6 +22,7 @@ services:
       # Mount the parent dir (not /data) because postgres:18+ uses PGDATA=/var/lib/postgresql/<MAJOR>/docker.
       # Parent mount is upgrade-friendly across major versions.
       - postgres-data:/var/lib/postgresql
+      - ./apps/api/docker/postgres/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sport} -d ${POSTGRES_DB:-sport}"]
       interval: 5s
