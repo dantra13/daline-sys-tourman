@@ -10,6 +10,7 @@ using Sport.Disciplines.BDM;
 using Sport.Disciplines.BKB;
 using Sport.Disciplines.BOX;
 using Sport.Disciplines.FBL;
+using Sport.Disciplines.JUD;
 using Sport.Disciplines.VBV;
 using Sport.Infrastructure;
 using Wolverine;
@@ -23,7 +24,8 @@ builder.Services
     .AddDisciplineModule<BdmModule>()
     .AddDisciplineModule<VbvModule>()
     .AddDisciplineModule<BoxModule>()
-    .AddDisciplineModule<AthModule>();
+    .AddDisciplineModule<AthModule>()
+    .AddDisciplineModule<JudModule>();
 
 builder.Services.AddSportInfrastructure();
 builder.Services.AddOpenApi();

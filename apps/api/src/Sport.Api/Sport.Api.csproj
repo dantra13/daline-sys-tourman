@@ -8,6 +8,7 @@
     <ProjectReference Include="..\Sport.Disciplines.VBV\Sport.Disciplines.VBV.csproj" />
     <ProjectReference Include="..\Sport.Disciplines.BOX\Sport.Disciplines.BOX.csproj" />
     <ProjectReference Include="..\Sport.Disciplines.ATH\Sport.Disciplines.ATH.csproj" />
+    <ProjectReference Include="..\Sport.Disciplines.JUD\Sport.Disciplines.JUD.csproj" />
     <ProjectReference Include="..\Sport.Infrastructure\Sport.Infrastructure.csproj" />
     <ProjectReference Include="..\Sport.Application\Sport.Application.csproj" />
   </ItemGroup>
