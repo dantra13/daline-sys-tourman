@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
+using Sport.Api.Endpoints.Competitions;
+using Sport.Api.ErrorHandling;
+using Sport.Application;
 using Sport.Core.DisciplineRegistry;
 using Sport.Disciplines.ATH;
 using Sport.Disciplines.BDM;
@@ -8,6 +11,7 @@ using Sport.Disciplines.BOX;
 using Sport.Disciplines.FBL;
 using Sport.Disciplines.VBV;
 using Sport.Infrastructure;
+using Wolverine;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +27,11 @@ builder.Services
 builder.Services.AddSportInfrastructure();
 builder.Services.AddOpenApi();
 
+builder.Host.UseWolverine(opts =>
+{
+    opts.Discovery.IncludeAssembly(typeof(AssemblyMarker).Assembly);
+});
+
 var app = builder.Build();
 
 app.Services.BuildSportRegistry();
@@ -33,15 +42,19 @@ using (var scope = app.Services.CreateScope())
     await runner.ApplyAsync();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.MapOpenApi();
 app.MapScalarApiReference();
 
-app.MapGet("/",        () => Results.Ok(new { name = "Sport.Api" }));
-app.MapGet("/health",  () => Results.Ok(new { status = "alive" }));
+app.MapGet("/",       () => Results.Ok(new { name = "Sport.Api" }));
+app.MapGet("/health", () => Results.Ok(new { status = "alive" }));
 app.MapHealthChecks("/health/ready", new HealthCheckOptions
 {
     Predicate = check => check.Tags.Contains("ready"),
 });
+
+app.MapCompetitionEndpoints();
 
 app.Run();
 
