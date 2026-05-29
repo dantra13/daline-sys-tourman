@@ -52,6 +52,14 @@ public static class CreateCompetitionHandler
                     continue;
                 }
 
+                if (item.Genders is null || item.Genders.Count == 0)
+                {
+                    failures.Add(new ValidationFailure(
+                        "competition.genders_required",
+                        $"disciplines[{i}].genders"));
+                    continue;
+                }
+
                 var genders = new HashSet<GenderCode>();
                 for (var g = 0; g < item.Genders.Count; g++)
                 {

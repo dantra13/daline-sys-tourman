@@ -9,6 +9,7 @@ internal static class DomainErrorCatalog
         ["I-COMP-3"] = new("competition.duplicate_discipline",      "Discipline appears more than once.",     422),
         ["I-COMP-4"] = new("competition.gender_not_supported",      "Gender is not supported by discipline.", 422),
         ["I-COMP-5"] = new("competition.name_required",             "Competition name is required.",          422),
+        ["I-COMP-6"] = new("competition.genders_required",         "At least one gender is required per discipline.", 422),
         ["I-DR-1"]   = new("competition.date_range_invalid",        "End date must be on or after start.",    422),
     };
 

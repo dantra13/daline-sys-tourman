@@ -196,12 +196,11 @@ public class ArchitectureRules
     }
 
     [Fact]
-    public void Implementations_of_Application_Abstractions_in_Infrastructure_are_sealed()
+    public void Implementations_of_Application_Abstractions_in_Infrastructure_are_internal_sealed()
     {
-        // Concrete types must be sealed.  They are declared public (not internal) because
-        // Wolverine's ServiceLocationPolicy.NotAllowed requires the concrete type to be public
-        // so it can generate direct constructor-injection code rather than going through the
-        // service locator.  The abstraction interface is still the only thing callers depend on.
+        // Wolverine 6 with ServiceLocationPolicy.AllowedButWarn resolves implementations via
+        // the container by interface; concrete types can and should remain internal sealed for
+        // encapsulation.
         var abstractionInterfaces = new[]
         {
             typeof(ICompetitionRepository),
@@ -213,9 +212,10 @@ public class ArchitectureRules
             var result = Types.InAssembly(InfrastructureAssembly)
                 .That().ImplementInterface(iface)
                 .Should().BeSealed()
+                .And().NotBePublic()
                 .GetResult();
             result.IsSuccessful.Should().BeTrue(
-                $"All {iface.Name} implementations in Sport.Infrastructure must be sealed.");
+                $"All {iface.Name} implementations in Sport.Infrastructure must be internal sealed.");
         }
     }
 
@@ -254,6 +254,13 @@ public class ArchitectureRules
         // I-COMP-4: gender not supported by discipline
         Capture(() => Competition.Create(validId, validCode, "N", validDates,
             new[] { (fbl, (IReadOnlySet<GenderCode>)new HashSet<GenderCode> { f }) }, registry), observed);
+
+        // I-COMP-6: empty genders for a discipline
+        Capture(() => CompetitionDiscipline.Create(
+            CompetitionDisciplineId.From(Guid.NewGuid()),
+            validId,
+            fbl,
+            new HashSet<GenderCode>()), observed);
 
         // I-DR-1: invalid date range
         Capture(() => DateRange.Create(new DateOnly(2026, 1, 5), new DateOnly(2026, 1, 1)), observed);

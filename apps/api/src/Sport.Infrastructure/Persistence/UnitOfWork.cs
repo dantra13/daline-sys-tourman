@@ -2,7 +2,7 @@ using Sport.Application.Abstractions;
 
 namespace Sport.Infrastructure.Persistence;
 
-public sealed class UnitOfWork : IUnitOfWork
+internal sealed class UnitOfWork : IUnitOfWork
 {
     private readonly SportDbContext _db;
 

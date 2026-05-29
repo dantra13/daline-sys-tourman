@@ -117,6 +117,24 @@ public class CompetitionEndpointsTests : IClassFixture<TestApiFactory>
     }
 
     [Fact]
+    public async Task POST_with_empty_genders_returns_422_with_code_genders_required()
+    {
+        var payload = new
+        {
+            code = "e2e-empty-genders",
+            name = "EmptyGenders",
+            dates = new { start = "2026-08-01", end = "2026-08-05" },
+            disciplines = new[] { new { code = "FBL", genders = Array.Empty<string>() } },
+        };
+
+        var resp = await _client.PostAsJsonAsync("/competitions", payload);
+
+        resp.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+        var body = await resp.Content.ReadFromJsonAsync<ProblemBody>();
+        body!.Code.Should().Be("competition.genders_required");
+    }
+
+    [Fact]
     public async Task GET_returns_200_with_items_envelope()
     {
         var resp = await _client.GetAsync("/competitions");

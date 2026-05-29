@@ -4,7 +4,7 @@ using Sport.Core.Competitions;
 
 namespace Sport.Infrastructure.Persistence;
 
-public sealed class CompetitionRepository : ICompetitionRepository
+internal sealed class CompetitionRepository : ICompetitionRepository
 {
     private readonly SportDbContext _db;
 
