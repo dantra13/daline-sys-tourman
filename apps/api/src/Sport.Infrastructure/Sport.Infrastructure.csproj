@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sport.Core\Sport.Core.csproj" />
+    <ProjectReference Include="..\Sport.Application\Sport.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
