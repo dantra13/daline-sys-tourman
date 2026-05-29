@@ -26,6 +26,7 @@ builder.Services
 
 builder.Services.AddSportInfrastructure();
 builder.Services.AddOpenApi();
+builder.Services.AddUnifiedProblemDetails();
 
 builder.Host.UseWolverine(opts =>
 {
@@ -42,6 +43,7 @@ using (var scope = app.Services.CreateScope())
     await runner.ApplyAsync();
 }
 
+app.UseStatusCodePages();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapOpenApi();
