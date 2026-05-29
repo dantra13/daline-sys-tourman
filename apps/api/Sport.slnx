@@ -22,6 +22,7 @@
     <Project Path="tests/Sport.Disciplines.BKB.Tests/Sport.Disciplines.BKB.Tests.csproj" />
     <Project Path="tests/Sport.Disciplines.BOX.Tests/Sport.Disciplines.BOX.Tests.csproj" />
     <Project Path="tests/Sport.Disciplines.FBL.Tests/Sport.Disciplines.FBL.Tests.csproj" />
+    <Project Path="tests/Sport.Disciplines.JUD.Tests/Sport.Disciplines.JUD.Tests.csproj" />
     <Project Path="tests/Sport.Disciplines.VBV.Tests/Sport.Disciplines.VBV.Tests.csproj" />
     <Project Path="tests/Sport.Infrastructure.Tests/Sport.Infrastructure.Tests.csproj" />
   </Folder>
