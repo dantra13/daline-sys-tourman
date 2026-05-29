@@ -22,9 +22,19 @@ public static class DependencyInjection
             var cfg = sp.GetRequiredService<IConfiguration>();
             var env = sp.GetRequiredService<IHostEnvironment>();
 
+            var connectionString = cfg.GetConnectionString("Postgres");
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new InvalidOperationException(
+                    "Connection string 'Postgres' is missing or empty. Set ConnectionStrings__Postgres via " +
+                    "an environment variable, appsettings.Development.json, or your IDE run configuration " +
+                    "(Rider: Run > Edit Configurations > Environment variables). " +
+                    "Local default: Host=localhost;Port=5432;Database=sport;Username=sport;Password=<from .env>.");
+            }
+
             options
                 .UseNpgsql(
-                    cfg.GetConnectionString("Postgres"),
+                    connectionString,
                     npgsql => npgsql.MigrationsAssembly(typeof(SportDbContext).Assembly.FullName))
                 .UseSnakeCaseNamingConvention()
                 .AddInterceptors(sp.GetRequiredService<SlowQueryInterceptor>())

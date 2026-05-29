@@ -1,4 +1,3 @@
-using JasperFx.CodeGeneration.Model;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
 using Sport.Api.Endpoints.Competitions;
@@ -32,10 +31,6 @@ builder.Services.AddUnifiedProblemDetails();
 builder.Host.UseWolverine(opts =>
 {
     opts.Discovery.IncludeAssembly(typeof(AssemblyMarker).Assembly);
-    // DbContextOptions<T> is registered via an opaque lambda factory in EF Core's AddDbContext,
-    // making it impossible for Wolverine to inline-resolve the full dependency chain.
-    // AllowedButWarn permits service location (the 5.x default) while still surfacing diagnostics.
-    opts.ServiceLocationPolicy = ServiceLocationPolicy.AllowedButWarn;
 });
 
 var app = builder.Build();

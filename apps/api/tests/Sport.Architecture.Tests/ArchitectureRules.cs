@@ -196,11 +196,12 @@ public class ArchitectureRules
     }
 
     [Fact]
-    public void Implementations_of_Application_Abstractions_in_Infrastructure_are_internal_sealed()
+    public void Implementations_of_Application_Abstractions_in_Infrastructure_are_sealed()
     {
-        // Wolverine 6 with ServiceLocationPolicy.AllowedButWarn resolves implementations via
-        // the container by interface; concrete types can and should remain internal sealed for
-        // encapsulation.
+        // Concrete repository/UoW types are public sealed (not internal sealed) so Wolverine 6
+        // can emit inline constructor injection via its codegen instead of falling back to
+        // service location. Encapsulation is preserved by them living in Sport.Infrastructure
+        // and only ever being resolved via their interfaces from the DI container.
         var abstractionInterfaces = new[]
         {
             typeof(ICompetitionRepository),
@@ -212,10 +213,9 @@ public class ArchitectureRules
             var result = Types.InAssembly(InfrastructureAssembly)
                 .That().ImplementInterface(iface)
                 .Should().BeSealed()
-                .And().NotBePublic()
                 .GetResult();
             result.IsSuccessful.Should().BeTrue(
-                $"All {iface.Name} implementations in Sport.Infrastructure must be internal sealed.");
+                $"All {iface.Name} implementations in Sport.Infrastructure must be sealed.");
         }
     }
 
