@@ -226,16 +226,27 @@ Sort by `Result/@SortOrder`.
   result extensions.
 - Do not schedule team subunits separately; connect them from `DT_RESULT`.
 
-## Code Appendix: Values Visible in Pages 29-40
+## Code Appendix: Paris 2024 Values
 
-| Code Entity | Section Usage | Visible Values |
+Catalog values come from Paris 2024 CC/SC code tables; message-specific restrictions remain in the field tables above.
+
+| Code Entity | Section Usage | Values |
 |---|---|---|
 | `DocumentType` | Header | `DT_RESULT` |
-| `ResultStatus` | Header | `START_LIST`, `LIVE`, `INTERMEDIATE`, `UNOFFICIAL`, `OFFICIAL`, `PROVISIONAL` |
+| `CC@ResultStatus` | Header | `START_LIST`, `LIVE`, `INTERMEDIATE`, `UNCONFIRMED`, `UNOFFICIAL`, `OFFICIAL`, `PARTIAL`, `PROTESTED`, `PROVISIONAL` |
+| `SC@ResultCode` | Contest decision | `FUS`, `IPP`, `KIK`, `PEN`, `WAZ`, `YUK` |
+| `SC@PointsType` | Score extensions | `IPP`, `WAZ`, `YUK` |
+| `SC@PenaltyType` | Penalty extensions | `H`, `S`, `S3`, `X`, `s1`, `s2`, `s3` |
+| `SC@ResultType` | Competitor result type | `IRM`, `IRM_POINTS`, `POINTS` |
+| `SC@IRM` | Invalid result mark | `DNS`, `DQB`, `DSQ`, `WDR` |
+| `SC@WLT` | Win/loss | `W`, `L` |
+| `SC@Outcome` | Progression/ranking outcome | `PROG_8FNL`, `PROG_FNL`, `PROG_QFNL`, `PROG_R32`, `PROG_REP1`, `PROG_REPF`, `PROG_SFNL`, `STOP1`, `STOP2`, `STOP3`, `STOP5`, `STOP7`, `STOP9`, `STOP17`, `STOP33` |
+| `SC@Colour` | Athlete colour | `BLUE`, `WHITE` |
 | `ExtendedInfo` codes | Unit state | `RES_CODE`, `GOLD_SCORE`, `TECH_CODE`, `TECH_DESCRIPTION`, `COMP` |
 | `TEAM/COMP` extensions | Team subunits | `WEIGHT_CATEGORY`, `HOME`, `AWAY`, `DURATION`, `GOLD_SCORE`, `STATUS` |
-| `STATUS` values | Team contest state | `SCHEDULED`, `RUNNING`, `FINISHED`, `CANCELLED` |
-| `ExtendedResult` codes | Result detail | `OUTCOME`, `S3`, `IPP`, `WAZ`, `CONTEST` |
+| `CC@ScheduleStatus` | Team contest state | `CANCELLED`, `DELAYED`, `FINISHED`, `GETTING_READY`, `INTERRUPTED`, `POSTPONED`, `RESCHEDULED`, `RUNNING`, `SCHEDULED`, `SCHEDULED_BREAK`, `UNSCHEDULED` |
+| `ExtendedResult` codes | Result detail | `OUTCOME`, `CONTEST`, plus `SC@PointsType` (`IPP`, `WAZ`, `YUK`) and `SC@PenaltyType` (`H`, `S`, `S3`, `X`, `s1`, `s2`, `s3`) |
 | `EventUnitEntry` codes | Athlete facts | `BODYWEIGHT`, `COLOUR`, `RANK_WLD`, `RESULT_BEST` |
 | `Competitor/@Type` | Competitor kind | `A`, `T` |
-| `CompetitorPlace` | Placeholders | `TBD`, `NCT` |
+| `SC@CompetitorPlace` | Placeholders | `BYE`, `NCT`, `NOAWARD`, `NOCOMP`, `TBD` |
+| `SC@Technique` | Winning technique | Large JUD technique catalog in SportCodes; keep as code reference instead of hard-coding a partial list. |

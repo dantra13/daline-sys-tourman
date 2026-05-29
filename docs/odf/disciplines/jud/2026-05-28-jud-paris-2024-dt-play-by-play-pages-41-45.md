@@ -128,14 +128,19 @@ Sort by `Actions/Action/@Order`.
 - `When` is not absolute time; it is the elapsed time inside the period.
 - Team-member action details are expressed through `Competitor/@Type="T"` and nested athlete composition where present.
 
-## Code Appendix: Values Visible in Pages 41-45
+## Code Appendix: Paris 2024 Values
 
-| Code Entity | Section Usage | Visible Values |
+Catalog values come from Paris 2024 CC/SC code tables; message-specific restrictions remain in the field tables above.
+
+| Code Entity | Section Usage | Values |
 |---|---|---|
 | `DocumentType` | Header | `DT_PLAY_BY_PLAY` |
 | `DocumentSubtype` | Header | `ACTION` |
-| `ResultStatus` | Header | `START_LIST`, `LIVE`, `INTERMEDIATE`, `UNOFFICIAL`, `OFFICIAL`, `PROVISIONAL` |
+| `CC@ResultStatus` | Header | `START_LIST`, `LIVE`, `INTERMEDIATE`, `UNCONFIRMED`, `UNOFFICIAL`, `OFFICIAL`, `PARTIAL`, `PROTESTED`, `PROVISIONAL` |
 | `ActionAdd` | Action domain discriminator | `ACTION`, `POINTSTYPE`, `PENALTYTYPE` |
+| `SC@Action` | Contest lifecycle action | `START_CONTEST`, `END_CONTEST` |
+| `SC@PointsType` | Scoring action | `IPP`, `WAZ`, `YUK` |
+| `SC@PenaltyType` | Penalty action | `H`, `S`, `S3`, `X`, `s1`, `s2`, `s3` |
+| `SC@Period` | Action period | `N`, `GS` |
 | `Competitor/@Type` | Competitor kind | `A`, `T` |
-| Sample penalty | `Action/@Action` | `S` |
-| Sample period | `Action/@Period` | `N` |
+| `SC@Technique` | Action result technique | Large JUD technique catalog in SportCodes; keep as code reference instead of hard-coding a partial list. |

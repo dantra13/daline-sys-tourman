@@ -206,14 +206,16 @@ Sort by `Session/@SessionCode`, then units by `Unit/@StartDate`, `Unit/@Order`, 
 - Do not expect team-member composition in team schedule start lists; team members come from `DT_PARTIC_TEAMS` and
   `DT_RESULT`.
 
-## Code Appendix: Values Visible in Pages 8-18
+## Code Appendix: Paris 2024 Values
 
-| Code Entity | Section Usage | Visible Values |
+Catalog values come from Paris 2024 CC/SC code tables; message-specific restrictions remain in the field tables above.
+
+| Code Entity | Section Usage | Values |
 |---|---|---|
 | `DocumentType` | Header | `DT_SCHEDULE`, `DT_SCHEDULE_UPDATE` |
 | `DocumentSubtype` | Header | `SYNC` |
 | `ModificationIndicator` | Session/unit updates | `N`, `U` |
-| `ScheduleStatus` | Session/unit status | `UNSCHEDULED`, `CANCELLED`, `POSTPONED`, `RESCHEDULED` appear in prose. |
-| `CompetitorPlace` | Competitor placeholders | `TBD`, `NOCOMP` |
+| `CC@ScheduleStatus` | Session/unit status | `CANCELLED`, `DELAYED`, `FINISHED`, `GETTING_READY`, `INTERRUPTED`, `POSTPONED`, `RESCHEDULED`, `RUNNING`, `SCHEDULED`, `SCHEDULED_BREAK`, `UNSCHEDULED` |
+| `SC@CompetitorPlace` | Competitor placeholders | `BYE`, `NCT`, `NOAWARD`, `NOCOMP`, `TBD` |
 | `Competitor/@Type` | Start-list competitor type | `A`, `T` |
 | `MediaAccess` | Non-competition units | `OPE`, `CLO` |

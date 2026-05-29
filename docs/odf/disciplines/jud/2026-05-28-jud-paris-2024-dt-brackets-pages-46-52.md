@@ -166,15 +166,25 @@ then `BracketItem/@Position`.
 - `StrikeOut="Y"` is usually a disqualification presentation concern but should remain attached to the competitor
   place.
 
-## Code Appendix: Values Visible in Pages 46-52
+## Code Appendix: Paris 2024 Values
 
-| Code Entity | Section Usage | Visible Values |
+Catalog values come from Paris 2024 CC/SC code tables; message-specific restrictions remain in the field tables above.
+
+| Code Entity | Section Usage | Values |
 |---|---|---|
 | `DocumentType` | Header | `DT_BRACKETS` |
-| `ResultStatus` | Header | `START_LIST`, `INTERMEDIATE`, `OFFICIAL`, `PROVISIONAL` |
+| `CC@ResultStatus` | Header | `START_LIST`, `LIVE`, `INTERMEDIATE`, `UNCONFIRMED`, `UNOFFICIAL`, `OFFICIAL`, `PARTIAL`, `PROTESTED`, `PROVISIONAL` |
+| `SC@Bracket` | Bracket code | `FNL`, `BRN1`, `BRN2` |
+| `SC@BracketItems` | Bracket item grouping | `FNL-1`, `REPF`, `REP1`, `SFNL`, `QFNL`, `8FNL`, `R32-5`, `R64-6` |
 | `BracketItem/@Code` | Unknown contest | `TBD` |
-| `CompetitorPlace/@Code` | Placeholder | `BYE`, `TBD` mentioned in prose. |
+| `SC@CompetitorPlace` | Placeholder | `BYE`, `NCT`, `NOAWARD`, `NOCOMP`, `TBD` |
 | `ExtBracketItem/@Code` | Bracket item extensions | `DECISION`, `TECH_CODE`, `LOCATION` |
 | `ExtCompPlace/@Code` | Competitor place extension | `PENALTY` |
+| `SC@ResultCode` | Bracket item decision | `FUS`, `IPP`, `KIK`, `PEN`, `WAZ`, `YUK` |
+| `SC@PenaltyType` | Competitor place penalty | `H`, `S`, `S3`, `X`, `s1`, `s2`, `s3` |
+| `SC@ResultType` | Competitor place result type | `IRM`, `IRM_POINTS`, `POINTS` |
+| `SC@IRM` | Invalid result mark | `DNS`, `DQB`, `DSQ`, `WDR` |
+| `SC@WLT` | Win/loss | `W`, `L` |
 | `StrikeOut` | Competitor place | `Y`; `DQB` mentioned as common use. |
 | `Competitor/@Type` | Competitor kind | `A`, `T` |
+| `SC@Technique` | Winning technique | Large JUD technique catalog in SportCodes; keep as code reference instead of hard-coding a partial list. |

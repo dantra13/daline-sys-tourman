@@ -150,12 +150,15 @@ Sort by `Team/@Code`.
 - Historical teams are valid identity records but are not registered to events.
 - `ModificationIndicator="D"` deletes a team from the previously loaded bulk list.
 
-## Code Appendix: Values Visible in Pages 25-28
+## Code Appendix: Paris 2024 Values
 
-| Code Entity | Section Usage | Visible Values |
+Catalog values come from Paris 2024 CC/SC code tables; message-specific restrictions remain in the field tables above.
+
+| Code Entity | Section Usage | Values |
 |---|---|---|
 | `DocumentType` | Header | `DT_PARTIC_TEAMS`, `DT_PARTIC_TEAMS_UPDATE` |
 | `DocumentSubtype` | Header | `SYNC`, `HISTORICAL` |
 | `ModificationIndicator` | Updates | `N`, `U`, `D` |
-| `TeamType` | Team naming | `ORG` |
+| `SC@TeamType` | Team naming | `ORG` |
+| `CC@SportGender` | Team gender | `-`, `M`, `O`, `W`, `X` |
 | `EventEntry/@Code` | Team event extensions | `RANK_WLD` |

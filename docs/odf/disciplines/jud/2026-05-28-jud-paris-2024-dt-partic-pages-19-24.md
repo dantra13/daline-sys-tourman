@@ -163,13 +163,19 @@ Sort by `Participant/@Code`.
 - Use `DT_PARTIC_TEAMS` for team identity; use `DT_PARTIC` for individual participant/team-member identity.
 - `RANK_WLD` is a string of length three; preserve leading zeroes.
 
-## Code Appendix: Values Visible in Pages 19-24
+## Code Appendix: Paris 2024 Values
 
-| Code Entity | Section Usage | Visible Values |
+Catalog values come from Paris 2024 CC/SC code tables; message-specific restrictions remain in the field tables above.
+
+| Code Entity | Section Usage | Values |
 |---|---|---|
 | `DocumentType` | Header | `DT_PARTIC`, `DT_PARTIC_UPDATE` |
 | `DocumentSubtype` | Header | `SYNC`, `HISTORICAL` |
 | `ModificationIndicator` | Updates | `N`, `U` |
+| `CC@ParticStatus` | Participant status | `ACTIVE`, `CANCEL` |
+| `CC@PersonGender` | Participant gender | `F`, `M`, `X` |
+| `CC@ResultsFunction` | Main function | `AA01` athlete, `RE` referee for JUD discipline functions |
 | `OlympicSolidarity` | Participant flag | `Y` |
-| `EventEntry/@Code` | Event extensions | `QUAL_TYPE`, `RANK_WLD`, `DEAF` |
+| `EventEntry/@Code` | Event extensions | `QUAL_TYPE`, `RANK_WLD`; `DEAF` appears in the dictionary text but not in the JUD SportCodes entry group. |
+| `SC@QualifyingType` | Qualification type | `CQ`, `DIR`, `HST`, `INV`, `REA`, `TIP`, `UP` |
 | `DisciplineEntry/@Code` | Discipline extension | `BIB` |

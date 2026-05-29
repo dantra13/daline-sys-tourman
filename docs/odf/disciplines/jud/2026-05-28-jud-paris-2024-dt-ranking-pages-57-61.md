@@ -122,12 +122,14 @@ Sort by `Result/@SortOrder`.
 - `SortOrder` is mandatory and should drive presentation even when ranks are tied or missing.
 - Support both athlete and team competitors because Judo ranking applies to individual and team events.
 
-## Code Appendix: Values Visible in Pages 57-61
+## Code Appendix: Paris 2024 Values
 
-| Code Entity | Section Usage | Visible Values |
+Catalog values come from Paris 2024 CC/SC code tables; message-specific restrictions remain in the field tables above.
+
+| Code Entity | Section Usage | Values |
 |---|---|---|
 | `DocumentType` | Header | `DT_RANKING` |
-| `ResultStatus` | Header | `PARTIAL`, `OFFICIAL`, `PROVISIONAL` |
-| `CompetitorPlace` | Unawarded place | `NOAWARD` |
+| `CC@ResultStatus` | Header | `START_LIST`, `LIVE`, `INTERMEDIATE`, `UNCONFIRMED`, `UNOFFICIAL`, `OFFICIAL`, `PARTIAL`, `PROTESTED`, `PROVISIONAL` |
+| `SC@CompetitorPlace` | Unawarded place | `BYE`, `NCT`, `NOAWARD`, `NOCOMP`, `TBD` |
 | `Competitor/@Type` | Competitor kind | `A`, `T` |
-| `IRM` | Invalid rank mark | `DQB` appears in the sample. |
+| `SC@IRM` | Invalid rank mark | `DNS`, `DQB`, `DSQ`, `WDR` |
