@@ -34,4 +34,13 @@ public class UnitTests
         var act = () => unit.LinkDisciplineRef(Guid.NewGuid());
         act.Should().Throw<DomainException>().WithMessage("*already linked*");
     }
+
+    [Fact]
+    public void CreateAtomic_rejects_non_filler_trailing()
+    {
+        var act = () => Unit.CreateAtomic(
+            UnitId.New(), PhaseId.New(), UnitCode.From("00010000"), PhaseRsc, null);
+
+        act.Should().Throw<DomainException>().Which.Code.Should().Be("I-STR-14");
+    }
 }

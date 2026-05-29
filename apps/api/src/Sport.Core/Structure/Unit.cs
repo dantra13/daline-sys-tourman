@@ -27,6 +27,8 @@ public sealed class Unit
 
     public static Unit CreateAtomic(UnitId id, PhaseId phaseId, UnitCode code, Rsc phaseRsc, DateTimeOffset? scheduledStart)
     {
+        if (!code.Value.EndsWith("--", StringComparison.Ordinal))
+            throw new DomainException("I-STR-14", "Atomic UnitCode must end with '--' (positions 7-8 are reserved for subunits).");
         var rsc = ComposeUnitRsc(code, phaseRsc);
         return new Unit(id, phaseId, code, scheduledStart, rsc, new List<Subunit>());
     }
