@@ -1,3 +1,4 @@
+using JasperFx.CodeGeneration.Model;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
 using Sport.Api.Endpoints.Competitions;
@@ -31,6 +32,11 @@ builder.Services.AddUnifiedProblemDetails();
 builder.Host.UseWolverine(opts =>
 {
     opts.Discovery.IncludeAssembly(typeof(AssemblyMarker).Assembly);
+    // EF Core registers DbContextOptions<T> via an opaque lambda factory that Wolverine's
+    // codegen cannot inline-resolve. The default in Wolverine 6.x is NotAllowed, which
+    // throws InvalidServiceLocationException at first dispatch. AllowedButWarn restores
+    // working behaviour while still surfacing the opaque-factory diagnostic.
+    opts.ServiceLocationPolicy = ServiceLocationPolicy.AllowedButWarn;
 });
 
 var app = builder.Build();
