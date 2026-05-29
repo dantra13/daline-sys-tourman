@@ -19,7 +19,7 @@ public sealed class Team
     public static Team Create(TeamId id, TeamCode code, string name, OrganisationId organisationId, DisciplineCode disciplineCode)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new DomainException("Team.Name is required.");
+            throw new DomainException("I-PAR-4", "Team.Name is required.");
         return new Team(id, code, name, organisationId, disciplineCode);
     }
 }

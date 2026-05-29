@@ -16,7 +16,7 @@ public readonly record struct OfficialScope
     public static OfficialScope Create(ScopeLevel level, Guid targetId)
     {
         if (targetId == Guid.Empty)
-            throw new DomainException("OfficialScope.TargetId must not be empty.");
+            throw new DomainException("I-OFF-1", "OfficialScope.TargetId must not be empty.");
         return new OfficialScope(level, targetId);
     }
 }

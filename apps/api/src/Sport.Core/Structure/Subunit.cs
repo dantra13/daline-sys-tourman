@@ -18,7 +18,7 @@ public sealed class Subunit
     {
         var s = parentUnitRsc.Value;
         if (s[32] != '0' || s[33] != '0')
-            throw new DomainException("Parent Unit RSC must end with '00' to host subunits (I-STR-7).");
+            throw new DomainException("I-STR-7", "Parent Unit RSC must end with '00' to host subunits.");
 
         var composed = string.Concat(s.AsSpan(0, 32), code.Value);
         return new Subunit(id, unitId, code, Rsc.From(composed));

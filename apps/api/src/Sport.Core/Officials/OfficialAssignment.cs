@@ -35,10 +35,10 @@ public sealed class OfficialAssignment
         OrganisationId? organisationId)
     {
         if (!descriptor.ValidScopes.Contains(scope.Level))
-            throw new DomainException($"ScopeLevel '{scope.Level}' is not allowed for function '{descriptor.Code.Value}' (I-OFF-2).");
+            throw new DomainException("I-OFF-2", $"ScopeLevel '{scope.Level}' is not allowed for function '{descriptor.Code.Value}'.");
 
         if (descriptor.RequiresOrganisation && organisationId is null)
-            throw new DomainException($"Function '{descriptor.Code.Value}' Organisation is required (I-OFF-3).");
+            throw new DomainException("I-OFF-3", $"Function '{descriptor.Code.Value}' Organisation is required.");
 
         return new OfficialAssignment(id, personId, descriptor.Code, scope, organisationId);
     }

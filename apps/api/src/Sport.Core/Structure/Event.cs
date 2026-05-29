@@ -49,13 +49,13 @@ public sealed class Event
         string name,
         IDisciplineModule disciplineModule)
     {
-        if (string.IsNullOrWhiteSpace(name)) throw new DomainException("Event.Name is required.");
+        if (string.IsNullOrWhiteSpace(name)) throw new DomainException("I-STR-2", "Event.Name is required.");
 
         if (!disciplineModule.SupportedGenders.Contains(gender))
-            throw new DomainException($"Gender '{gender}' is not supported by discipline '{disciplineCode.Value}' (I-STR-1).");
+            throw new DomainException("I-STR-1", $"Gender '{gender}' is not supported by discipline '{disciplineCode.Value}'.");
 
         var validation = disciplineModule.ValidateEventType(eventType, modifier);
-        if (!validation.IsSuccess) throw new DomainException(validation.Error!);
+        if (!validation.IsSuccess) throw new DomainException("I-STR-12", validation.Error!);
 
         var rsc = Rsc.Compose(disciplineCode, gender, eventType, modifier, phase: null, unit: null, subunit: null);
         return new Event(id, competitionDisciplineId, disciplineCode, gender, eventType, modifier, name, rsc);
@@ -64,12 +64,12 @@ public sealed class Event
     public Phase AddPhase(PhaseCode code, int order, IDisciplineModule disciplineModule)
     {
         var validation = disciplineModule.ValidatePhaseForEventType(EventType, code);
-        if (!validation.IsSuccess) throw new DomainException(validation.Error!);
+        if (!validation.IsSuccess) throw new DomainException("I-STR-13", validation.Error!);
 
         if (_phases.Any(p => p.Order == order))
-            throw new DomainException($"Phase.Order {order} already exists in Event (I-STR-4).");
+            throw new DomainException("I-STR-4", $"Phase.Order {order} already exists in Event.");
         if (_phases.Any(p => p.Code == code))
-            throw new DomainException($"PhaseCode '{code.Value}' already exists in Event (I-STR-5).");
+            throw new DomainException("I-STR-5", $"PhaseCode '{code.Value}' already exists in Event.");
 
         var phase = Phase.Create(PhaseId.New(), Id, code, order, Rsc);
         _phases.Add(phase);

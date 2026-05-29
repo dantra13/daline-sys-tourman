@@ -32,7 +32,7 @@ public sealed class CompetitionDiscipline
         IReadOnlySet<GenderCode> enabledGenders)
     {
         if (enabledGenders is null || enabledGenders.Count == 0)
-            throw new DomainException("A CompetitionDiscipline must enable at least one gender.");
+            throw new DomainException("I-COMP-6", "A CompetitionDiscipline must enable at least one gender.");
         // Store as array; dedup preserved because input is a set.
         return new CompetitionDiscipline(id, competitionId, code, enabledGenders.ToArray());
     }
