@@ -6,4 +6,8 @@ public sealed record EventTypeDescriptor(
     EventTypeCode Code,
     string DisplayName,
     IReadOnlySet<GenderCode> AppliesToGenders,
-    ModifierContract ModifierContract);
+    ModifierContract ModifierContract)
+{
+    public bool HostsSubunits { get; init; }
+    public IReadOnlyCollection<SubunitCode> CanonicalSubunits { get; init; } = Array.Empty<SubunitCode>();
+}
