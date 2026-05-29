@@ -13,6 +13,7 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Sport.Api.Tests/Sport.Api.Tests.csproj" />
+    <Project Path="tests/Sport.Application.Tests/Sport.Application.Tests.csproj" />
     <Project Path="tests/Sport.Architecture.Tests/Sport.Architecture.Tests.csproj" />
     <Project Path="tests/Sport.Core.Tests/Sport.Core.Tests.csproj" />
     <Project Path="tests/Sport.Disciplines.ATH.Tests/Sport.Disciplines.ATH.Tests.csproj" />
