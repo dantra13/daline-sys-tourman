@@ -92,4 +92,14 @@ public class EventGovernedAssemblyTests
         var act = () => ev.AddAtomicUnit(PhaseCode.From("SFNL"), UnitCode.From("000100--"), Module, null);
         act.Should().Throw<DomainException>().Which.Code.Should().Be("I-STR-18");
     }
+
+    [Fact]
+    public void AddTeamMatchUnit_rejects_empty_contests()
+    {
+        var ev = TeamEvent();
+        var act = () => ev.AddTeamMatchUnit(
+            PhaseCode.From("FNL"), UnitCode.From("00010000"),
+            Array.Empty<SubunitCode>(), Module, null);
+        act.Should().Throw<DomainException>().Which.Code.Should().Be("I-STR-19");
+    }
 }

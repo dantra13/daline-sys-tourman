@@ -103,6 +103,10 @@ public sealed class Event
             throw new DomainException("I-STR-15",
                 $"EventType '{EventType.Value}' does not host subunits.");
 
+        if (contests.Count == 0)
+            throw new DomainException("I-STR-19",
+                $"EventType '{EventType.Value}' requires at least one subunit.");
+
         foreach (var contest in contests)
         {
             var validation = disciplineModule.ValidateSubunitCode(EventType, contest);
