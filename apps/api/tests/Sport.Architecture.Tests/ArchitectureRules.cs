@@ -196,8 +196,12 @@ public class ArchitectureRules
     }
 
     [Fact]
-    public void Implementations_of_Application_Abstractions_in_Infrastructure_are_internal_sealed()
+    public void Implementations_of_Application_Abstractions_in_Infrastructure_are_sealed()
     {
+        // Concrete types must be sealed.  They are declared public (not internal) because
+        // Wolverine's ServiceLocationPolicy.NotAllowed requires the concrete type to be public
+        // so it can generate direct constructor-injection code rather than going through the
+        // service locator.  The abstraction interface is still the only thing callers depend on.
         var abstractionInterfaces = new[]
         {
             typeof(ICompetitionRepository),
@@ -209,10 +213,9 @@ public class ArchitectureRules
             var result = Types.InAssembly(InfrastructureAssembly)
                 .That().ImplementInterface(iface)
                 .Should().BeSealed()
-                .And().NotBePublic()
                 .GetResult();
             result.IsSuccessful.Should().BeTrue(
-                $"All {iface.Name} implementations in Sport.Infrastructure must be internal sealed.");
+                $"All {iface.Name} implementations in Sport.Infrastructure must be sealed.");
         }
     }
 
