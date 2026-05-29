@@ -17,4 +17,24 @@ internal static class CompetitionFactory
                     (IReadOnlySet<GenderCode>)new HashSet<GenderCode> { GenderCode.M }),
             },
             registry: registry);
+
+    public static Competition Custom(
+        IDisciplineRegistry registry,
+        string code,
+        string name,
+        DateOnly? start = null,
+        DateOnly? end = null) =>
+        Competition.Create(
+            id: CompetitionId.From(Guid.NewGuid()),
+            code: CompetitionCode.From(code),
+            name: name,
+            dates: DateRange.Create(
+                start ?? new DateOnly(2026, 8, 1),
+                end ?? new DateOnly(2026, 8, 5)),
+            disciplines: new[]
+            {
+                (DisciplineCode.From("FBL"),
+                    (IReadOnlySet<GenderCode>)new HashSet<GenderCode> { GenderCode.M }),
+            },
+            registry: registry);
 }
