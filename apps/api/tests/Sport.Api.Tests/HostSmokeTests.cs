@@ -37,15 +37,15 @@ public class HostSmokeTests : IClassFixture<TestApiFactory>
     }
 
     [Fact]
-    public void Registry_has_all_six_disciplines_registered()
+    public void Registry_has_all_seven_disciplines_registered()
     {
         using var factory  = new TestApiFactory();
         using var scope    = factory.Services.CreateScope();
         var registry       = scope.ServiceProvider.GetRequiredService<IDisciplineRegistry>();
 
-        registry.RegisteredCodes.Should().HaveCount(6);
+        registry.RegisteredCodes.Should().HaveCount(7);
         var codes = registry.RegisteredCodes.Select(c => c.Value).ToHashSet();
-        codes.Should().BeEquivalentTo(new[] { "FBL", "BKB", "BDM", "VBV", "BOX", "ATH" });
+        codes.Should().BeEquivalentTo(new[] { "FBL", "BKB", "BDM", "VBV", "BOX", "ATH", "JUD" });
     }
 
     [Fact]

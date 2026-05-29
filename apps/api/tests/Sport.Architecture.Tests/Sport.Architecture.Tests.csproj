@@ -28,6 +28,7 @@
     <ProjectReference Include="..\..\src\Sport.Disciplines.VBV\Sport.Disciplines.VBV.csproj" />
     <ProjectReference Include="..\..\src\Sport.Disciplines.BOX\Sport.Disciplines.BOX.csproj" />
     <ProjectReference Include="..\..\src\Sport.Disciplines.ATH\Sport.Disciplines.ATH.csproj" />
+    <ProjectReference Include="..\..\src\Sport.Disciplines.JUD\Sport.Disciplines.JUD.csproj" />
     <ProjectReference Include="..\..\src\Sport.Infrastructure\Sport.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\Sport.Application\Sport.Application.csproj" />
     <ProjectReference Include="..\..\src\Sport.Api\Sport.Api.csproj" />

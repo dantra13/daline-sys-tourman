@@ -21,6 +21,7 @@ public class ArchitectureRules
         typeof(Sport.Disciplines.VBV.VbvModule).Assembly,
         typeof(Sport.Disciplines.BOX.BoxModule).Assembly,
         typeof(Sport.Disciplines.ATH.AthModule).Assembly,
+        typeof(Sport.Disciplines.JUD.JudModule).Assembly,
     };
 
     [Fact]

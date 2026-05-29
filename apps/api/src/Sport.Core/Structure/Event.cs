@@ -75,4 +75,53 @@ public sealed class Event
         _phases.Add(phase);
         return phase;
     }
+
+    public Unit AddAtomicUnit(
+        PhaseCode phaseCode,
+        UnitCode code,
+        IDisciplineModule disciplineModule,
+        DateTimeOffset? scheduledStart)
+    {
+        if (disciplineModule.HostsSubunits(EventType))
+            throw new DomainException("I-STR-16",
+                $"EventType '{EventType.Value}' hosts subunits; use AddTeamMatchUnit.");
+
+        var phase = FindPhase(phaseCode);
+        var unit = Unit.CreateAtomic(UnitId.New(), phase.Id, code, phase.Rsc, scheduledStart);
+        phase.AddUnit(unit);
+        return unit;
+    }
+
+    public Unit AddTeamMatchUnit(
+        PhaseCode phaseCode,
+        UnitCode parentCode,
+        IReadOnlyCollection<SubunitCode> contests,
+        IDisciplineModule disciplineModule,
+        DateTimeOffset? scheduledStart)
+    {
+        if (!disciplineModule.HostsSubunits(EventType))
+            throw new DomainException("I-STR-15",
+                $"EventType '{EventType.Value}' does not host subunits.");
+
+        if (contests.Count == 0)
+            throw new DomainException("I-STR-19",
+                $"EventType '{EventType.Value}' requires at least one subunit.");
+
+        foreach (var contest in contests)
+        {
+            var validation = disciplineModule.ValidateSubunitCode(EventType, contest);
+            if (!validation.IsSuccess) throw new DomainException("I-STR-17", validation.Error!);
+        }
+
+        var phase = FindPhase(phaseCode);
+        var parent = Unit.CreateParentForSubunits(UnitId.New(), phase.Id, parentCode, phase.Rsc, scheduledStart);
+        foreach (var contest in contests)
+            parent.AddSubunit(Subunit.Create(SubunitId.New(), parent.Id, contest, parent.Rsc));
+        phase.AddUnit(parent);
+        return parent;
+    }
+
+    private Phase FindPhase(PhaseCode code) =>
+        _phases.FirstOrDefault(p => p.Code == code)
+            ?? throw new DomainException("I-STR-18", $"Phase '{code.Value}' not found in Event.");
 }
