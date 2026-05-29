@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Sport.Api/Sport.Api.csproj" />
+    <Project Path="src/Sport.Application/Sport.Application.csproj" />
     <Project Path="src/Sport.Core/Sport.Core.csproj" />
     <Project Path="src/Sport.Disciplines.ATH/Sport.Disciplines.ATH.csproj" />
     <Project Path="src/Sport.Disciplines.BDM/Sport.Disciplines.BDM.csproj" />
