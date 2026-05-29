@@ -37,10 +37,13 @@ var app = builder.Build();
 
 app.Services.BuildSportRegistry();
 
-using (var scope = app.Services.CreateScope())
+if (!app.Environment.IsEnvironment("Testing"))
 {
-    var runner = scope.ServiceProvider.GetRequiredService<SportMigrationRunner>();
-    await runner.ApplyAsync();
+    using (var scope = app.Services.CreateScope())
+    {
+        var runner = scope.ServiceProvider.GetRequiredService<SportMigrationRunner>();
+        await runner.ApplyAsync();
+    }
 }
 
 app.UseStatusCodePages();
