@@ -12,3 +12,4 @@ Judo-specific ODF data dictionary notes.
 | `DT_PLAY_BY_PLAY` contest actions | [2026-05-28-jud-paris-2024-dt-play-by-play-pages-41-45.md](2026-05-28-jud-paris-2024-dt-play-by-play-pages-41-45.md) |
 | `DT_BRACKETS` progression brackets | [2026-05-28-jud-paris-2024-dt-brackets-pages-46-52.md](2026-05-28-jud-paris-2024-dt-brackets-pages-46-52.md) |
 | `DT_RANKING` event final ranking | [2026-05-28-jud-paris-2024-dt-ranking-pages-57-61.md](2026-05-28-jud-paris-2024-dt-ranking-pages-57-61.md) |
+| `DT_CONFIG` event configuration | [2026-05-28-jud-paris-2024-dt-config-pages-62-63.md](2026-05-28-jud-paris-2024-dt-config-pages-62-63.md) |
