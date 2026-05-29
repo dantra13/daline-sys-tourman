@@ -1,24 +1,9 @@
 using System.Net;
 using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Sport.Core.DisciplineRegistry;
 
 namespace Sport.Api.Tests;
-
-/// <summary>
-/// WebApplicationFactory that sets ASPNETCORE_ENVIRONMENT to "Testing" so the
-/// SportMigrationRunner skips (it only runs in Development) and no real Postgres
-/// connection is required at startup.
-/// </summary>
-public sealed class TestApiFactory : WebApplicationFactory<Program>
-{
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
-    {
-        builder.UseEnvironment("Testing");
-    }
-}
 
 public class HostSmokeTests : IClassFixture<TestApiFactory>
 {

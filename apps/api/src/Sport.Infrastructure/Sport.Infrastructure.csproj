@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sport.Core\Sport.Core.csproj" />
+    <ProjectReference Include="..\Sport.Application\Sport.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,5 +25,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Sport.Infrastructure.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 
 </Project>

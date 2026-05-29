@@ -61,11 +61,11 @@ public sealed class Entry
         switch (type)
         {
             case EntryType.Team when teamId is null:
-                throw new DomainException("Type=Team requires TeamId (I-PAR-2).");
+                throw new DomainException("I-PAR-2", "Type=Team requires TeamId.");
             case EntryType.Athlete when teamId is not null:
-                throw new DomainException("Type=Athlete: TeamId must be null (I-PAR-2).");
+                throw new DomainException("I-PAR-2", "Type=Athlete: TeamId must be null.");
             case EntryType.Group when teamId is not null:
-                throw new DomainException("Type=Group: TeamId must be null (I-PAR-2).");
+                throw new DomainException("I-PAR-2", "Type=Group: TeamId must be null.");
         }
     }
 
@@ -73,16 +73,16 @@ public sealed class Entry
         EntryType type,
         IReadOnlyCollection<(PersonId PersonId, int Order, Bib? Bib)> members)
     {
-        if (members is null) throw new DomainException("Composition is required.");
+        if (members is null) throw new DomainException("I-PAR-7", "Composition is required.");
 
         switch (type)
         {
             case EntryType.Athlete when members.Count != 1:
-                throw new DomainException("Athlete entry must contain exactly 1 composition member (I-PAR-1).");
+                throw new DomainException("I-PAR-1", "Athlete entry must contain exactly 1 composition member.");
             case EntryType.Team when members.Count < 1:
-                throw new DomainException("Team entry must contain at least 1 composition member (I-PAR-1).");
+                throw new DomainException("I-PAR-1", "Team entry must contain at least 1 composition member.");
             case EntryType.Group when members.Count < 2:
-                throw new DomainException("Group entry must contain at least 2 composition members (I-PAR-1).");
+                throw new DomainException("I-PAR-1", "Group entry must contain at least 2 composition members.");
         }
 
         var seenOrders = new HashSet<int>();
@@ -90,9 +90,9 @@ public sealed class Entry
         foreach (var m in members)
         {
             if (!seenOrders.Add(m.Order))
-                throw new DomainException("CompositionMember.Order must be unique within Entry (I-PAR-6).");
+                throw new DomainException("I-PAR-6", "CompositionMember.Order must be unique within Entry.");
             if (!seenPersons.Add(m.PersonId))
-                throw new DomainException("PersonId duplicated within the same Entry composition.");
+                throw new DomainException("I-PAR-8", "PersonId duplicated within the same Entry composition.");
         }
     }
 }

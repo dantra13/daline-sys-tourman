@@ -9,14 +9,14 @@ public sealed class DisciplineRegistry : IDisciplineRegistry
     public void Register(IDisciplineModule module)
     {
         if (_modules.ContainsKey(module.Code))
-            throw new DomainException($"Discipline '{module.Code.Value}' is already registered.");
+            throw new DomainException("I-REG-1", $"Discipline '{module.Code.Value}' is already registered.");
         _modules[module.Code] = module;
     }
 
     public IDisciplineModule Get(DisciplineCode code) =>
         _modules.TryGetValue(code, out var m)
             ? m
-            : throw new DomainException($"Discipline '{code.Value}' is not registered.");
+            : throw new DomainException("I-REG-2", $"Discipline '{code.Value}' is not registered.");
 
     public bool IsRegistered(DisciplineCode code) => _modules.ContainsKey(code);
 

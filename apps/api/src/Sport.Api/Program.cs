@@ -1,5 +1,9 @@
+using JasperFx.CodeGeneration.Model;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
+using Sport.Api.Endpoints.Competitions;
+using Sport.Api.ErrorHandling;
+using Sport.Application;
 using Sport.Core.DisciplineRegistry;
 using Sport.Disciplines.ATH;
 using Sport.Disciplines.BDM;
@@ -8,6 +12,7 @@ using Sport.Disciplines.BOX;
 using Sport.Disciplines.FBL;
 using Sport.Disciplines.VBV;
 using Sport.Infrastructure;
+using Wolverine;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,26 +27,44 @@ builder.Services
 
 builder.Services.AddSportInfrastructure();
 builder.Services.AddOpenApi();
+builder.Services.AddUnifiedProblemDetails();
+
+builder.Host.UseWolverine(opts =>
+{
+    opts.Discovery.IncludeAssembly(typeof(AssemblyMarker).Assembly);
+    // DbContextOptions<T> is registered via an opaque lambda factory in EF Core's AddDbContext,
+    // making it impossible for Wolverine to inline-resolve the full dependency chain.
+    // AllowedButWarn permits service location (the 5.x default) while still surfacing diagnostics.
+    opts.ServiceLocationPolicy = ServiceLocationPolicy.AllowedButWarn;
+});
 
 var app = builder.Build();
 
 app.Services.BuildSportRegistry();
 
-using (var scope = app.Services.CreateScope())
+if (!app.Environment.IsEnvironment("Testing"))
 {
-    var runner = scope.ServiceProvider.GetRequiredService<SportMigrationRunner>();
-    await runner.ApplyAsync();
+    using (var scope = app.Services.CreateScope())
+    {
+        var runner = scope.ServiceProvider.GetRequiredService<SportMigrationRunner>();
+        await runner.ApplyAsync();
+    }
 }
+
+app.UseStatusCodePages();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapOpenApi();
 app.MapScalarApiReference();
 
-app.MapGet("/",        () => Results.Ok(new { name = "Sport.Api" }));
-app.MapGet("/health",  () => Results.Ok(new { status = "alive" }));
+app.MapGet("/",       () => Results.Ok(new { name = "Sport.Api" }));
+app.MapGet("/health", () => Results.Ok(new { status = "alive" }));
 app.MapHealthChecks("/health/ready", new HealthCheckOptions
 {
     Predicate = check => check.Tags.Contains("ready"),
 });
+
+app.MapCompetitionEndpoints();
 
 app.Run();
 

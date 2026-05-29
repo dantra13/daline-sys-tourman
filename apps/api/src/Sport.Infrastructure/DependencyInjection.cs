@@ -4,7 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Sport.Application.Abstractions;
 using Sport.Infrastructure.Interceptors;
+using Sport.Infrastructure.Persistence;
 
 namespace Sport.Infrastructure;
 
@@ -46,6 +48,8 @@ public static class DependencyInjection
             .AddDbContextCheck<SportDbContext>(name: "postgres", tags: new[] { "ready" });
 
         services.AddScoped<SportMigrationRunner>();
+        services.AddScoped<ICompetitionRepository, CompetitionRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
 }

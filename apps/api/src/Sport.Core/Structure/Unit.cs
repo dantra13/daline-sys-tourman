@@ -34,7 +34,7 @@ public sealed class Unit
     public static Unit CreateParentForSubunits(UnitId id, PhaseId phaseId, UnitCode code, Rsc phaseRsc, DateTimeOffset? scheduledStart)
     {
         if (!code.Value.EndsWith("00", StringComparison.Ordinal))
-            throw new DomainException("UnitCode for a parent of subunits must end with '00' (I-STR-7).");
+            throw new DomainException("I-STR-7", "UnitCode for a parent of subunits must end with '00'.");
         var rsc = ComposeUnitRsc(code, phaseRsc);
         return new Unit(id, phaseId, code, scheduledStart, rsc, new List<Subunit>());
     }
@@ -42,16 +42,16 @@ public sealed class Unit
     public void AddSubunit(Subunit subunit)
     {
         if (subunit.UnitId != Id)
-            throw new DomainException("Subunit.UnitId must match parent Unit.Id.");
+            throw new DomainException("I-STR-10", "Subunit.UnitId must match parent Unit.Id.");
         if (_subunits.Any(s => s.Code == subunit.Code))
-            throw new DomainException($"SubunitCode '{subunit.Code.Value}' already exists in Unit (I-STR-8).");
+            throw new DomainException("I-STR-8", $"SubunitCode '{subunit.Code.Value}' already exists in Unit.");
         _subunits.Add(subunit);
     }
 
     public void LinkDisciplineRef(Guid disciplineRef)
     {
         if (DisciplineUnitRef is not null)
-            throw new DomainException("Unit already linked to a discipline-specific entity.");
+            throw new DomainException("I-STR-11", "Unit already linked to a discipline-specific entity.");
         DisciplineUnitRef = disciplineRef;
     }
 

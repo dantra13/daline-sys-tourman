@@ -17,7 +17,14 @@ public readonly record struct DateRange
     public static DateRange Create(DateOnly start, DateOnly end)
     {
         if (start > end)
-            throw new DomainException("DateRange.Start must be on or before DateRange.End.");
+            throw new DomainException(
+                "I-DR-1",
+                "DateRange.Start must be on or before DateRange.End.",
+                new Dictionary<string, object?>
+                {
+                    ["start"] = start.ToString("yyyy-MM-dd"),
+                    ["end"] = end.ToString("yyyy-MM-dd"),
+                });
         return new DateRange(start, end);
     }
 }

@@ -173,11 +173,79 @@ git commit -m "refactor(core): DomainException carries Code and Params"
 
 ### Task 2: Update `Sport.Core` throw sites to use codes
 
-**Files:**
+> **Scope correction:** initial drafting assumed only `Competition.cs` and `DateRange.cs` raised `DomainException`. In fact 41 throw sites exist across the Core, spread over Competitions, Structure, Participants, Officials, and DisciplineRegistry. This task assigns a code to every site so the codebase compiles. Only Competition + DateRange codes are exercised by tests / catalog in this plan; other aggregates' codes are documented here for traceability and will be exercised as their endpoints come online.
+
+**Files (production):**
 - Modify: `apps/api/src/Sport.Core/Competitions/Competition.cs`
+- Modify: `apps/api/src/Sport.Core/Competitions/CompetitionDiscipline.cs`
 - Modify: `apps/api/src/Sport.Core/Competitions/DateRange.cs`
-- Test: `apps/api/tests/Sport.Core.Tests/Competitions/CompetitionInvariantCodesTests.cs` (create)
-- Test: `apps/api/tests/Sport.Core.Tests/Competitions/DateRangeInvariantCodesTests.cs` (create)
+- Modify: `apps/api/src/Sport.Core/Structure/Event.cs`
+- Modify: `apps/api/src/Sport.Core/Structure/Phase.cs`
+- Modify: `apps/api/src/Sport.Core/Structure/Unit.cs`
+- Modify: `apps/api/src/Sport.Core/Structure/Subunit.cs`
+- Modify: `apps/api/src/Sport.Core/Participants/Entry.cs`
+- Modify: `apps/api/src/Sport.Core/Participants/Person.cs`
+- Modify: `apps/api/src/Sport.Core/Participants/Organisation.cs`
+- Modify: `apps/api/src/Sport.Core/Participants/Team.cs`
+- Modify: `apps/api/src/Sport.Core/Officials/OfficialAssignment.cs`
+- Modify: `apps/api/src/Sport.Core/Officials/OfficialScope.cs`
+- Modify: `apps/api/src/Sport.Core/DisciplineRegistry/DisciplineRegistry.cs`
+
+**Files (tests, new):**
+- Test: `apps/api/tests/Sport.Core.Tests/Competitions/CompetitionInvariantCodesTests.cs`
+- Test: `apps/api/tests/Sport.Core.Tests/Competitions/DateRangeInvariantCodesTests.cs`
+
+**Code assignment (clean text + structured Code):**
+
+Keep each message verbatim minus any trailing `(I-X-N)` marker (the marker now lives structurally in `Code`). Use these codes:
+
+| File | Existing message snippet | Code |
+|---|---|---|
+| `Competitions/Competition.cs` | `Competition.Name is required.` | `I-COMP-5` |
+| `Competitions/Competition.cs` | `A Competition must have at least 1 discipline` | `I-COMP-1` |
+| `Competitions/Competition.cs` | `Discipline '...' is not registered` | `I-COMP-2` |
+| `Competitions/Competition.cs` | `Duplicate discipline '...'` | `I-COMP-3` |
+| `Competitions/Competition.cs` | `Gender '...' is not supported by discipline` | `I-COMP-4` |
+| `Competitions/CompetitionDiscipline.cs` | `must enable at least one gender` | `I-COMP-6` |
+| `Competitions/DateRange.cs` | `DateRange.Start must be on or before DateRange.End.` | `I-DR-1` |
+| `Structure/Event.cs:52` | `Event.Name is required.` | `I-STR-2` |
+| `Structure/Event.cs:55` | `Gender ... not supported ... (I-STR-1)` | `I-STR-1` |
+| `Structure/Event.cs:58` | (from `validation.Error!`, RSC unit) | `I-STR-12` |
+| `Structure/Event.cs:67` | (from `validation.Error!`, RSC subunit) | `I-STR-13` |
+| `Structure/Event.cs:70` | `Phase.Order ... already exists in Event (I-STR-4)` | `I-STR-4` |
+| `Structure/Event.cs:72` | `PhaseCode ... already exists in Event (I-STR-5)` | `I-STR-5` |
+| `Structure/Phase.cs:24` | `Phase.Order must be non-negative.` | `I-STR-3` |
+| `Structure/Phase.cs:36` | `Unit.PhaseId must match parent Phase.Id.` | `I-STR-9` |
+| `Structure/Phase.cs:38` | `UnitCode ... already exists in Phase (I-STR-6)` | `I-STR-6` |
+| `Structure/Unit.cs:37` | `UnitCode for a parent of subunits must end with '00' (I-STR-7)` | `I-STR-7` |
+| `Structure/Unit.cs:45` | `Subunit.UnitId must match parent Unit.Id.` | `I-STR-10` |
+| `Structure/Unit.cs:47` | `SubunitCode ... already exists in Unit (I-STR-8)` | `I-STR-8` |
+| `Structure/Unit.cs:54` | `Unit already linked to a discipline-specific entity.` | `I-STR-11` |
+| `Structure/Subunit.cs:21` | `Parent Unit RSC must end with '00' (I-STR-7)` | `I-STR-7` |
+| `Officials/OfficialAssignment.cs:38` | `ScopeLevel ... not allowed for function (I-OFF-2)` | `I-OFF-2` |
+| `Officials/OfficialAssignment.cs:41` | `Function ... Organisation is required (I-OFF-3)` | `I-OFF-3` |
+| `Officials/OfficialScope.cs:19` | `OfficialScope.TargetId must not be empty.` | `I-OFF-1` |
+| `Participants/Entry.cs:64` | `Type=Team requires TeamId (I-PAR-2)` | `I-PAR-2` |
+| `Participants/Entry.cs:66` | `Type=Athlete: TeamId must be null (I-PAR-2)` | `I-PAR-2` |
+| `Participants/Entry.cs:68` | `Type=Group: TeamId must be null (I-PAR-2)` | `I-PAR-2` |
+| `Participants/Entry.cs:76` | `Composition is required.` | `I-PAR-7` |
+| `Participants/Entry.cs:81` | `Athlete entry must contain exactly 1 composition member (I-PAR-1)` | `I-PAR-1` |
+| `Participants/Entry.cs:83` | `Team entry must contain at least 1 composition member (I-PAR-1)` | `I-PAR-1` |
+| `Participants/Entry.cs:85` | `Group entry must contain at least 2 composition members (I-PAR-1)` | `I-PAR-1` |
+| `Participants/Entry.cs:93` | `CompositionMember.Order must be unique within Entry (I-PAR-6)` | `I-PAR-6` |
+| `Participants/Entry.cs:95` | `PersonId duplicated within the same Entry composition.` | `I-PAR-8` |
+| `Participants/Organisation.cs:20` | `Organisation.Name is required.` | `I-PAR-3` |
+| `Participants/Team.cs:22` | `Team.Name is required.` | `I-PAR-4` |
+| `Participants/Person.cs:28` | `Person.FamilyName is required.` | `I-PAR-9` |
+| `Participants/Person.cs:30` | `Person.FamilyName must be at most 50 characters.` | `I-PAR-10` |
+| `Participants/Person.cs:32` | `Person.GivenName must be at most 50 characters.` | `I-PAR-11` |
+| `Participants/Person.cs:34` | `Person.IFId must be at most 20 characters.` | `I-PAR-12` |
+| `DisciplineRegistry/DisciplineRegistry.cs:12` | `Discipline ... is already registered.` | `I-REG-1` |
+| `DisciplineRegistry/DisciplineRegistry.cs:19` | `Discipline ... is not registered.` | `I-REG-2` |
+
+When the existing message contains a trailing `(I-X-N)` marker, strip it (the structured `Code` replaces it). Otherwise leave the message identical.
+
+Add `Params` only for the throws used by `Competition.Create` and `DateRange.Create` (`discipline`, `gender`, `start`, `end`). For other aggregates leave `Params` defaulted (`null` argument); we'll fill them in when those endpoints land.
 
 - [ ] **Step 1: Write the failing test for `Competition`**
 

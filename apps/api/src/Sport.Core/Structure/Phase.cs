@@ -21,7 +21,7 @@ public sealed class Phase
 
     public static Phase Create(PhaseId id, EventId eventId, PhaseCode code, int order, Rsc eventRsc)
     {
-        if (order < 0) throw new DomainException("Phase.Order must be non-negative.");
+        if (order < 0) throw new DomainException("I-STR-3", "Phase.Order must be non-negative.");
         var composed = string.Concat(
             eventRsc.Value.AsSpan(0, 22),
             code.Value.PadRight(4, Rsc.Filler),
@@ -33,9 +33,9 @@ public sealed class Phase
     public void AddUnit(Unit unit)
     {
         if (unit.PhaseId != Id)
-            throw new DomainException("Unit.PhaseId must match parent Phase.Id.");
+            throw new DomainException("I-STR-9", "Unit.PhaseId must match parent Phase.Id.");
         if (_units.Any(u => u.Code == unit.Code))
-            throw new DomainException($"UnitCode '{unit.Code.Value}' already exists in Phase (I-STR-6).");
+            throw new DomainException("I-STR-6", $"UnitCode '{unit.Code.Value}' already exists in Phase.");
         _units.Add(unit);
     }
 }

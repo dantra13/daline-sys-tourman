@@ -25,13 +25,13 @@ public sealed class Person
     public static Person Create(PersonId id, string familyName, string? givenName, GenderCode gender, DateOnly? birthDate, string? ifId)
     {
         if (string.IsNullOrWhiteSpace(familyName))
-            throw new DomainException("Person.FamilyName is required.");
+            throw new DomainException("I-PAR-9", "Person.FamilyName is required.");
         if (familyName.Length > 50)
-            throw new DomainException("Person.FamilyName must be at most 50 characters.");
+            throw new DomainException("I-PAR-10", "Person.FamilyName must be at most 50 characters.");
         if (givenName is { Length: > 50 })
-            throw new DomainException("Person.GivenName must be at most 50 characters.");
+            throw new DomainException("I-PAR-11", "Person.GivenName must be at most 50 characters.");
         if (ifId is { Length: > 20 })
-            throw new DomainException("Person.IFId must be at most 20 characters.");
+            throw new DomainException("I-PAR-12", "Person.IFId must be at most 20 characters.");
         return new Person(id, familyName, givenName, gender, birthDate, ifId);
     }
 }

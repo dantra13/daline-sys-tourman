@@ -17,7 +17,7 @@ public sealed class Organisation
     public static Organisation Create(OrganisationId id, OrganisationCode code, string name, OrganisationType type)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new DomainException("Organisation.Name is required.");
+            throw new DomainException("I-PAR-3", "Organisation.Name is required.");
         return new Organisation(id, code, name, type);
     }
 }
