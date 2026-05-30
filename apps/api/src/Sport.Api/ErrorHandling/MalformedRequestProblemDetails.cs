@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http;
-
 namespace Sport.Api.ErrorHandling;
 
 internal static class MalformedRequestProblemDetails
@@ -27,6 +25,19 @@ internal static class MalformedRequestProblemDetails
                 };
                 ctx.ProblemDetails.Extensions["traceId"] =
                     System.Diagnostics.Activity.Current?.Id ?? ctx.HttpContext.TraceIdentifier;
+
+                // Single structured record per binder-level rejection, emitted at the same place
+                // that produces the envelope. Consistent across environments (Development no longer
+                // depends on a thrown BadHttpRequestException for visibility).
+                ctx.HttpContext.RequestServices
+                    .GetRequiredService<ILoggerFactory>()
+                    .CreateLogger("Sport.Api.MalformedRequest")
+                    .LogWarning(
+                        "Request rejected at binder: {Code} {Status} {Method} {Path}",
+                        code,
+                        status,
+                        ctx.HttpContext.Request.Method,
+                        ctx.HttpContext.Request.Path.Value);
             };
         });
 
