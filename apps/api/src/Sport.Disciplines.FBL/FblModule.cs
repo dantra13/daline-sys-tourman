@@ -33,6 +33,7 @@ public sealed class FblModule : IDisciplineModule
     };
 
     public IEntryRules EntryRules { get; } = new FblEntryRules();
+    public IResultSchema ResultSchema { get; } = new FblResultSchema();
 
     public Result ValidateEventType(EventTypeCode type, EventModifierCode? modifier)
     {

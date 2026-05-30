@@ -34,4 +34,9 @@ public interface IDisciplineModule
         SubunitsFor(type).Contains(code)
             ? Result.Ok()
             : Result.Fail($"SubunitCode '{code.Value}' is not valid for event type '{type.Value}'.");
+
+    // Operational-result grammar. Disciplines override with a typed schema; default is permissive.
+    IResultSchema ResultSchema => SharedDefaultResultSchema;
+
+    private static readonly IResultSchema SharedDefaultResultSchema = new DefaultResultSchema();
 }

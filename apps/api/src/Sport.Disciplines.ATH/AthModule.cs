@@ -31,6 +31,7 @@ public sealed class AthModule : IDisciplineModule
     };
 
     public IEntryRules EntryRules { get; } = new AthEntryRules();
+    public IResultSchema ResultSchema { get; } = new AthResultSchema();
 
     public Result ValidateEventType(EventTypeCode type, EventModifierCode? modifier)
     {
