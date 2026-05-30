@@ -104,9 +104,27 @@ public class UnitResultDocumentTests
             .Should().Throw<DomainException>().Where(e => e.Code == "I-RES-4");
     }
 
+    [Fact]
+    public void ApplySnapshot_propagates_the_schema_error_code_when_present()
+    {
+        var doc = NewDoc();
+        var rejecting = new CodedRejectingSchema();
+        FluentActions.Invoking(() => doc.ApplySnapshot(
+                new[] { new CompetitorResult(EntryId.New(), 1) },
+                Array.Empty<ResultSegment>(), Array.Empty<ResultExtension>(), rejecting))
+            .Should().Throw<DomainException>().Where(e => e.Code == "I-RES-5");
+        doc.Competitors.Should().BeEmpty();
+        doc.Version.Should().Be(1);
+    }
+
     private sealed class RejectingSchema : DefaultResultSchema
     {
         public override Result Validate(UnitResultDocument document) => Result.Fail("nope");
+    }
+
+    private sealed class CodedRejectingSchema : DefaultResultSchema
+    {
+        public override Result Validate(UnitResultDocument document) => Result.Fail("I-RES-5", "nope");
     }
 
     private sealed class FixedStatusSchema(IReadOnlySet<ResultStatus> statuses) : DefaultResultSchema
