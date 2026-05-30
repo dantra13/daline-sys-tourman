@@ -25,7 +25,7 @@ public readonly record struct Result
     public static Result Fail(string code, string error)
     {
         if (string.IsNullOrWhiteSpace(code))
-            throw new ArgumentException("Error code is required when provided for a failure result.", nameof(code));
+            throw new ArgumentException("Error code is required for a failure result.", nameof(code));
         if (string.IsNullOrWhiteSpace(error))
             throw new ArgumentException("Error message is required for a failure result.", nameof(error));
         return new Result(false, error, code);
