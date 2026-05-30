@@ -45,4 +45,11 @@ public class ResultTests
         var act = () => Result.Fail("I-RES-5", "  ");
         act.Should().Throw<ArgumentException>();
     }
+
+    [Fact]
+    public void Fail_with_message_only_rejects_blank_message()
+    {
+        var act = () => Result.Fail("   ");
+        act.Should().Throw<ArgumentException>();
+    }
 }
