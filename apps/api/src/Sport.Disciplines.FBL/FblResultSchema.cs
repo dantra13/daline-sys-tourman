@@ -14,10 +14,10 @@ public sealed class FblResultSchema : DefaultResultSchema
         foreach (var row in document.Competitors)
         {
             if (row.Rank is not null)
-                return Result.Fail("FBL does not use Rank; use WLT.");
+                return Result.Fail("I-RES-5", "FBL does not use Rank; use WLT.");
             var scored = document.Status != ResultStatus.StartList && row.Irm is null;
             if (scored && row.Wlt is null)
-                return Result.Fail("FBL is head-to-head: each scored competitor must carry a WLT.");
+                return Result.Fail("I-RES-5", "FBL is head-to-head: each scored competitor must carry a WLT.");
         }
         return Result.Ok();
     }
