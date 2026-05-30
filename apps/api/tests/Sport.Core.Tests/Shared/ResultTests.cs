@@ -6,27 +6,50 @@ namespace Sport.Core.Tests.Shared;
 public class ResultTests
 {
     [Fact]
-    public void Ok_creates_a_success_result_with_no_error()
+    public void Ok_has_no_error_and_no_code()
     {
-        var result = Result.Ok();
-
-        result.IsSuccess.Should().BeTrue();
-        result.Error.Should().BeNull();
+        var r = Result.Ok();
+        r.IsSuccess.Should().BeTrue();
+        r.Error.Should().BeNull();
+        r.Code.Should().BeNull();
     }
 
     [Fact]
-    public void Fail_creates_a_failure_result_with_error_message()
+    public void Fail_with_message_only_leaves_code_null()
     {
-        var result = Result.Fail("bad input");
-
-        result.IsSuccess.Should().BeFalse();
-        result.Error.Should().Be("bad input");
+        var r = Result.Fail("boom");
+        r.IsSuccess.Should().BeFalse();
+        r.Error.Should().Be("boom");
+        r.Code.Should().BeNull();
     }
 
     [Fact]
-    public void Fail_with_empty_message_throws()
+    public void Fail_with_code_sets_both_code_and_message()
     {
-        var act = () => Result.Fail("");
-        act.Should().Throw<System.ArgumentException>();
+        var r = Result.Fail("I-RES-5", "boom");
+        r.IsSuccess.Should().BeFalse();
+        r.Code.Should().Be("I-RES-5");
+        r.Error.Should().Be("boom");
+    }
+
+    [Fact]
+    public void Fail_with_blank_code_throws()
+    {
+        var act = () => Result.Fail("  ", "boom");
+        act.Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void Fail_with_blank_message_throws()
+    {
+        var act = () => Result.Fail("I-RES-5", "  ");
+        act.Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void Fail_with_message_only_rejects_blank_message()
+    {
+        var act = () => Result.Fail("   ");
+        act.Should().Throw<ArgumentException>();
     }
 }

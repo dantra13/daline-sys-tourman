@@ -22,7 +22,7 @@ public sealed class BoxResultSchema : DefaultResultSchema
         {
             var scored = document.Status != ResultStatus.StartList && row.Irm is null;
             if (scored && row.Wlt is null)
-                return Result.Fail("BOX is head-to-head: each scored competitor must carry a WLT.");
+                return Result.Fail("I-RES-5", "BOX is head-to-head: each scored competitor must carry a WLT.");
         }
         return Result.Ok();
     }

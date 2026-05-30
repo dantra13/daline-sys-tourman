@@ -64,7 +64,7 @@ public sealed class UnitResultDocument
             Replace(_competitors, prevC);
             Replace(_segments, prevS);
             Replace(_extensions, prevE);
-            throw new DomainException("I-RES-8", validation.Error!);
+            throw new DomainException(validation.Code ?? "I-RES-8", validation.Error!);
         }
         Version++;
     }

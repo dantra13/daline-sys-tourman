@@ -2,6 +2,7 @@ using FluentAssertions;
 using Sport.Core.DisciplineRegistry;
 using Sport.Core.Participants;
 using Sport.Core.Results;
+using Sport.Core.Shared;
 using Sport.Core.Structure;
 
 namespace Sport.Disciplines.BOX.Tests;
@@ -44,6 +45,18 @@ public class BoxResultSchemaTests
     {
         var schema = new BoxResultSchema();
         Bout(schema).Competitors.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public void Schema_rejects_a_scored_row_without_wlt()
+    {
+        var schema = new BoxResultSchema();
+        var doc = UnitResultDocument.CreateForUnit(UnitResultId.New(), UnitId.New(), UnitRsc, DisciplineCode.From("BOX"), Cat);
+        doc.TransitionTo(ResultStatus.Live, schema);
+        FluentActions.Invoking(() => doc.ApplySnapshot(
+                new[] { new CompetitorResult(EntryId.New(), 1) { ResultValue = "WP" } },
+                Array.Empty<ResultSegment>(), Array.Empty<ResultExtension>(), schema))
+            .Should().Throw<DomainException>().Where(e => e.Code == "I-RES-5");
     }
 
     [Fact]

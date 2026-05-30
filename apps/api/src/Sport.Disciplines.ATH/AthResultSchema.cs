@@ -16,9 +16,9 @@ public sealed class AthResultSchema : DefaultResultSchema
         foreach (var row in document.Competitors)
         {
             if (row.Wlt is not null)
-                return Result.Fail("ATH is ranked: WLT must be absent.");
+                return Result.Fail("I-RES-5", "ATH is ranked: WLT must be absent.");
             if (row.SortOrder <= 0)
-                return Result.Fail("ATH requires a positive SortOrder on every row.");
+                return Result.Fail("I-RES-5", "ATH requires a positive SortOrder on every row.");
         }
         return Result.Ok();
     }

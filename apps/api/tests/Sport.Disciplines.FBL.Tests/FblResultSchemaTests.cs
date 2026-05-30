@@ -48,7 +48,7 @@ public class FblResultSchemaTests
         FluentActions.Invoking(() => doc.ApplySnapshot(
                 new[] { new CompetitorResult(EntryId.New(), 1) { Rank = 1 } },
                 Array.Empty<ResultSegment>(), Array.Empty<ResultExtension>(), schema))
-            .Should().Throw<DomainException>().Where(e => e.Code == "I-RES-8");
+            .Should().Throw<DomainException>().Where(e => e.Code == "I-RES-5");
     }
 
     [Fact]

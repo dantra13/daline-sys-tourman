@@ -54,7 +54,7 @@ public class AthResultSchemaTests
         FluentActions.Invoking(() => doc.ApplySnapshot(
                 new[] { new CompetitorResult(EntryId.New(), 1) { Wlt = Wlt.W } },
                 Array.Empty<ResultSegment>(), Array.Empty<ResultExtension>(), schema))
-            .Should().Throw<DomainException>().Where(e => e.Code == "I-RES-8");
+            .Should().Throw<DomainException>().Where(e => e.Code == "I-RES-5");
     }
 
     [Fact]
