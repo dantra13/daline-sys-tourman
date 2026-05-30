@@ -26,6 +26,7 @@ public sealed class JudModule : IDisciplineModule
     };
 
     public IEntryRules EntryRules { get; } = new JudEntryRules();
+    public IResultSchema ResultSchema { get; } = new JudResultSchema();
 
     private static EventTypeDescriptor[] BuildEventTypes()
     {
