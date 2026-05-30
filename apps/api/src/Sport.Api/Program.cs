@@ -31,6 +31,12 @@ builder.Services.AddSportInfrastructure();
 builder.Services.AddOpenApi();
 builder.Services.AddUnifiedProblemDetails();
 
+// Keep minimal-API body-binding failures consistent across environments. The framework defaults
+// ThrowOnBadRequest to true in Development, which makes the binder throw BadHttpRequestException
+// (swallowed by ExceptionHandlingMiddleware as a 500) instead of short-circuiting with a 400.
+// Forcing it false routes every parse failure through the unified request.malformed envelope.
+builder.Services.Configure<RouteHandlerOptions>(o => o.ThrowOnBadRequest = false);
+
 builder.Host.UseWolverine(opts =>
 {
     opts.Discovery.IncludeAssembly(typeof(AssemblyMarker).Assembly);
@@ -45,7 +51,7 @@ var app = builder.Build();
 
 app.Services.BuildSportRegistry();
 
-if (!app.Environment.IsEnvironment("Testing"))
+if (builder.Configuration.GetValue("RunMigrationsOnStartup", true))
 {
     using (var scope = app.Services.CreateScope())
     {
