@@ -39,6 +39,7 @@ public sealed class BoxModule : IDisciplineModule
     };
 
     public IEntryRules EntryRules { get; } = new BoxEntryRules();
+    public IResultSchema ResultSchema { get; } = new BoxResultSchema();
 
     public Result ValidateEventType(EventTypeCode type, EventModifierCode? modifier)
     {
